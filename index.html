@@ -8,8 +8,8 @@
 <head>
   <meta charset="UTF-8">
 
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/ico.webp">
+  <link rel="icon" href="/images/ico.webp">
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
@@ -21,7 +21,7 @@
   
     <meta property="og:type" content="website">
 <meta property="og:title" content="wwblog">
-<meta property="og:url" content="http://meows.pet/index.html">
+<meta property="og:url" content="https://meows.pet/index.html">
 <meta property="og:site_name" content="wwblog">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="ljw">
@@ -89,7 +89,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>Fluid</strong>
+      <strong>一碗饭</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -294,7 +294,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
+            <span id="subtitle" data-typed-text="请输入文本=="></span>
           
         </div>
 
@@ -335,13 +335,55 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2026/07/26/hello-world/" target="_self">
+        <a href="/posts/2/" target="_self">
+          关于hexo-abbrlink2生成的数字ID混乱问题
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/2/" target="_self">
+        <div>
+          我想要更简洁的hexo永久链接,于是安装了hexo-abbrlink2插件,可是在hexo clean之后,文章与ID对应完全混乱  插件逻辑第一级:最高优先级  Front-matter(头文件)1if (data.abbrlink) &#123; return data; &#125; 可见如果.md文件顶部写了abbrlink: 26,插件直接将此ID分配给文章 第二级:文章级缓存 db.
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2026-07-27 11:07" pubdate>
+              2026-07-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/hexo/">#hexo</a>
+            
+              <a href="/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">#问题解决</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/posts/1/" target="_self">
           Hello World
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2026/07/26/hello-world/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/posts/1/" target="_self">
         <div>
           Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick
         </div>
@@ -351,8 +393,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2026-07-26 22:19" pubdate>
-              2026-07-26
+            <time datetime="2026-07-27 10:32" pubdate>
+              2026-07-27
             </time>
           </div>
         
