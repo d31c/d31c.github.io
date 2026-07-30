@@ -27,7 +27,7 @@
 <meta property="og:description" content="⚙️ 准备工作：配置.gitignore文件在Hexo根目录下创建或修改.gitignore文件，提前排除无需备份的文件夹和文件 12345db.json*.lognode_modules&#x2F;public&#x2F;.deploy*&#x2F; 在GitHub上新建仓库 建议设置成私有 12345678# 进入你的Hexo项目根目录git initgit add .git commit -m &quot;first c">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-07-30T17:55:07.000Z">
-<meta property="article:modified_time" content="2026-07-30T18:21:22.131Z">
+<meta property="article:modified_time" content="2026-07-30T18:33:01.791Z">
 <meta property="article:author" content="ljw">
 <meta property="article:tag" content="github">
 <meta property="article:tag" content="hexo">
@@ -327,7 +327,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          307 字
+          976 字
         
       </span>
     
@@ -338,7 +338,7 @@
         
         
         
-          3 分钟
+          9 分钟
         
       </span>
     
@@ -388,6 +388,11 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-comment"># 进入你的Hexo项目根目录</span><br>git init<br>git add .<br>git commit <span class="hljs-literal">-m</span> <span class="hljs-string">&quot;first commit&quot;</span><br><span class="hljs-comment"># 链接远程仓库</span><br>git remote add origin [链接]<br><span class="hljs-comment"># 推送至远程仓库</span><br>git push <span class="hljs-literal">-u</span> origin master<br></code></pre></td></tr></table></figure>
 <p>日常备份:</p>
 <figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">git <span class="hljs-keyword">add</span> .<br>git commit -m <span class="hljs-string">&quot;更新博客内容&quot;</span><br>git <span class="hljs-keyword">push</span><br></code></pre></td></tr></table></figure>
+<h1 id="设置成自动化备份"><a href="#设置成自动化备份" class="headerlink" title="设置成自动化备份"></a>设置成自动化备份</h1><p>新建deploy.ps1的PowerShell脚本</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">Write-Output</span> <span class="hljs-string">&quot;--------------1/5 开始清理---------------------&quot;</span><br>hexo cl<br><br><span class="hljs-built_in">Write-Output</span> <span class="hljs-string">&quot;-------------2/5 清理完毕，开始生成页面---------------&quot;</span><br>hexo g<br><br><span class="hljs-built_in">Write-Output</span> <span class="hljs-string">&quot;-------------3/5 生成完毕，开始部署--------------------&quot;</span><br>hexo d<br><br><span class="hljs-built_in">Write-Output</span> <span class="hljs-string">&quot;-------------4/5 部署完毕，开始备份源码-------------------&quot;</span><br><br><span class="hljs-comment"># 获取当前时间，格式化为 2026-07-31 15:30:25 这种形式</span><br><span class="hljs-variable">$commitTime</span> = <span class="hljs-built_in">Get-Date</span> <span class="hljs-literal">-Format</span> <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span><br><br>git add .<br>git commit <span class="hljs-literal">-m</span> <span class="hljs-string">&quot;自动备份源码 - <span class="hljs-variable">$commitTime</span>&quot;</span><br>git push<br><br><span class="hljs-built_in">Write-Output</span> <span class="hljs-string">&quot;-------------5/5 全部任务完成！---------------&quot;</span> <br></code></pre></td></tr></table></figure>
+<p>如果遇到终端输出的中文乱码:<br>用记事本打开deploy.ps1脚本文件,点击左上角文件 -&gt; 另存为,在底部的<strong>编码</strong>下拉框中，选择 <strong>UTF-8 with BOM</strong>（,点击保存，覆盖原文件。</p>
+<p>在之后想要部署+备份源码:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">./dedploy<br></code></pre></td></tr></table></figure>
                 
               </div>
             
