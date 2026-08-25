@@ -1,16 +1,34 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>标签: hook | 一碗饭blog</title><meta name="author" content="ljw"><meta name="copyright" content="ljw"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="ljw的个人博客∠( ᐛ 」∠)＿yiwan.fan">
-<meta property="og:type" content="website">
-<meta property="og:title" content="一碗饭blog">
-<meta property="og:url" content="https://yiwan.fan/tags/hook/index.html">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HttpCanary抓包(含证书问题解决) | 一碗饭blog</title><meta name="author" content="ljw"><meta name="copyright" content="ljw"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="抓包:抓包工具充当”中间人”在当”中间人之前,需要先与服务器进行TLS握手,要先使自己的CA证书被系统信任   从 Android 7.0（Nougat）开始，Google 改变了网络安全策略：自签名 CA 默认不再被任何 App 的安全连接信任所以要root后用模块把  HttpCanary根证书放到系统的目录酷安上随便找了一个模块  之后在设置里安装证书就可以了 但是有的应用会验证是否为预设的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HttpCanary抓包(含证书问题解决)">
+<meta property="og:url" content="https://yiwan.fan/posts/14/index.html">
 <meta property="og:site_name" content="一碗饭blog">
-<meta property="og:description" content="ljw的个人博客∠( ᐛ 」∠)＿yiwan.fan">
+<meta property="og:description" content="抓包:抓包工具充当”中间人”在当”中间人之前,需要先与服务器进行TLS握手,要先使自己的CA证书被系统信任   从 Android 7.0（Nougat）开始，Google 改变了网络安全策略：自签名 CA 默认不再被任何 App 的安全连接信任所以要root后用模块把  HttpCanary根证书放到系统的目录酷安上随便找了一个模块  之后在设置里安装证书就可以了 但是有的应用会验证是否为预设的">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://yiwan.fan/images/qcf.jpg">
+<meta property="article:published_time" content="2026-08-12T05:55:50.000Z">
+<meta property="article:modified_time" content="2026-08-12T05:57:11.405Z">
 <meta property="article:author" content="ljw">
-<meta property="article:tag" content="blog">
-<meta property="article:tag" content="博客">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="HttpCanary">
+<meta property="article:tag" content="Root">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yiwan.fan/images/qcf.jpg"><script type="application/ld+json"></script><link rel="shortcut icon" href="/image/ico.webp"><link rel="canonical" href="https://yiwan.fan/tags/hook/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+<meta name="twitter:image" content="https://yiwan.fan/images/qcf.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "HttpCanary抓包(含证书问题解决)",
+  "url": "https://yiwan.fan/posts/14/",
+  "image": "https://yiwan.fan/images/qcf.jpg",
+  "datePublished": "2026-08-12T05:55:50.000Z",
+  "dateModified": "2026-08-12T05:57:11.405Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "ljw",
+      "url": "https://yiwan.fan"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/image/ico.webp"><link rel="canonical" href="https://yiwan.fan/posts/14/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.6.1"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
     (() => {
       
     const saveToLocal = {
@@ -181,11 +199,17 @@
   },
   autoDarkmode: false
 }</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
-  title: '标签: hook',
+  title: 'HttpCanary抓包(含证书问题解决)',
   isHighlightShrink: false,
   isToc: false,
-  pageType: 'tag'
-}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="bg-animation" id="web_bg" style="background-color: #FFFFFF;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/qcf.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-list"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url(/images/wallpaper.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/images/ico.webp" alt="Logo"><span class="site-name">一碗饭blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-list"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">hook</h1></div></header><main class="layout" id="content-inner"><div id="tag"><div class="article-sort-title">标签 - hook</div><div class="article-sort"><div class="article-sort-item year">2026</div><div class="article-sort-item no-article-cover"><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2026-08-11T18:00:34.000Z" title="发表于 2026-08-12 02:00:34">2026-08-12</time></div><a class="article-sort-item-title" href="/posts/13/" title="关于SnowLuma在树莓派上hook失败问题解决">关于SnowLuma在树莓派上hook失败问题解决</a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/qcf.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ljw</div><div class="author-info-description">ljw的个人博客∠( ᐛ 」∠)＿<br>yiwan.fan</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/d31c"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/15/" title="一键玉米插件--Yummy Corn">一键玉米插件--Yummy Corn</a><time datetime="2026-08-25T08:35:44.000Z" title="发表于 2026-08-25 16:35:44">2026-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/14/" title="HttpCanary抓包(含证书问题解决)">HttpCanary抓包(含证书问题解决)</a><time datetime="2026-08-12T05:55:50.000Z" title="发表于 2026-08-12 13:55:50">2026-08-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/13/" title="关于SnowLuma在树莓派上hook失败问题解决">关于SnowLuma在树莓派上hook失败问题解决</a><time datetime="2026-08-11T18:00:34.000Z" title="发表于 2026-08-12 02:00:34">2026-08-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/12/" title="Docker学习笔记">Docker学习笔记</a><time datetime="2026-08-11T09:03:50.000Z" title="发表于 2026-08-11 17:03:50">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/11/" title="使用dpkg安装包遇到的缺少依赖问题">使用dpkg安装包遇到的缺少依赖问题</a><time datetime="2026-08-11T06:13:25.000Z" title="发表于 2026-08-11 14:13:25">2026-08-11</time></div></div></div></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2026-07-29T19:55:36.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-08-25T08:37:00.431Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By ljw</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.6.1</a></span></div><div class="footer_custom_text"><a href="https://icp.gov.moe/?keyword=20248777" target="_blank">萌ICP备20248777号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.6.1"></script><script src="/js/main.js?v=5.6.1"></script><div class="js-pjax"><script>(() => {
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="bg-animation" id="web_bg" style="background-color: #FFFFFF;"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/images/qcf.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-list"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/wallpaper.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/images/ico.webp" alt="Logo"><span class="site-name">一碗饭blog</span></a><a class="nav-page-title" href="/"><span class="site-name">HttpCanary抓包(含证书问题解决)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-list"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">HttpCanary抓包(含证书问题解决)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-12T05:55:50.000Z" title="发表于 2026-08-12 13:55:50">2026-08-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-12T05:57:11.405Z" title="更新于 2026-08-12 13:57:11">2026-08-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">问题解决</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>抓包:抓包工具充当”中间人”<br>在当”中间人之前,需要先与服务器进行TLS握手,要先使自己的CA证书被系统信任</p>
+<blockquote>
+<p> 从 Android 7.0（Nougat）开始，Google 改变了网络安全策略：自签名 CA 默认不再被任何 App 的安全连接信任<br>所以要root后用模块把  HttpCanary根证书放到系统的目录<br><img src="/1.jpg" alt="1"><br>酷安上随便找了一个模块</p>
+</blockquote>
+<p>之后在设置里安装证书就可以了</p>
+<p><img src="/3.jpg"><br><img src="/2.jpg"><br>但是有的应用会验证是否为预设的证书,所以这里还需要xposed模块绕过<br><img src="/4.jpg"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://yiwan.fan">ljw</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://yiwan.fan/posts/14/">https://yiwan.fan/posts/14/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.zh-hans" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://yiwan.fan" target="_blank">一碗饭blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HttpCanary/">HttpCanary</a><a class="post-meta__tags" href="/tags/Root/">Root</a><a class="post-meta__tags" href="/tags/Android/">Android</a></div><div class="post-share"><div class="social-share" data-image="/images/qcf.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/15/" title="一键玉米插件--Yummy Corn"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">一键玉米插件--Yummy Corn</div></div><div class="info-2"><div class="info-item-1"> 今天突然想尝试用ai做一个浏览器插件,写篇文记录下o.o  使用grill-me skill完善需求 然后交给ai,一次性做好了 插件介绍 🌽将pxxxxb网站视频的预览图替换为玉米 PORN ? CORN !   插件下载 🌽网盘:https://l66.lanzouu.com/itOHh44j13pc github:发行版 🌽 Yummy Corn v1.0.0 🌽 · d31c&#x2F;yummy-corn 插件README 🌽🌽Yummy Corn🌽NO PORN BUT CORN🌽 这个浏览器插件会把 Pornhub 视频预览图替换成玉米图片。 安装 下载并解压 Release 中的 yummy-corn-v1.0.0.zip。 在 Chrome 或 Edge 地址栏打开 chrome://extensions/ 或 edge://extensions/。 打开右上角的“开发者模式”。 点击“加载已解压的扩展程序”。 选择解压后的 corn-preview-replacer 文件夹。  使用安装后会自动启用。打开 Pornhub 页面并刷新即可生效。...</div></div></div></a><a class="pagination-related" href="/posts/13/" title="关于SnowLuma在树莓派上hook失败问题解决"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">关于SnowLuma在树莓派上hook失败问题解决</div></div><div class="info-2"><div class="info-item-1">在docker运行SnowLuma时,登录QQ后的hook过程报错日志: 1load failed: PID=77 err=component loading failed: remote mprotect failed for PT_LOAD segment 问题原因树莓派内存页大小和一般操作系统不同  内存页(个人理解):虚拟内存 ↔ 物理内存的映射粒度,例如一个20KB的可执行文件需要移到内存中,20KB&#x2F;4KB&#x3D;5页….0,20KB&#x2F;16kb&#x3D;1页…4(向上取整→2页),一般来说,可以整除4KB的更多,余数也更小,浪费更小,但是比较”零散”,速度慢,16K反之hook:在程序正常运行中,插入自己想要的代码执行,插入需要知道在内存的哪个位置(地址),内存页错误会导致计算错误  解决方法：切回 4KB 页内核树莓派官方系统自带 4K 页内核变体（kernel_2712_4k.img），切换即可。 1sudo nano /boot/firmware/config.txt  文件末尾加： 1kernel=kernel8.img  重启： 1...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/images/qcf.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">ljw</div><div class="author-info-description">ljw的个人博客∠( ᐛ 」∠)＿<br>yiwan.fan</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">36</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/d31c"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/15/" title="一键玉米插件--Yummy Corn">一键玉米插件--Yummy Corn</a><time datetime="2026-08-25T08:35:44.000Z" title="发表于 2026-08-25 16:35:44">2026-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/14/" title="HttpCanary抓包(含证书问题解决)">HttpCanary抓包(含证书问题解决)</a><time datetime="2026-08-12T05:55:50.000Z" title="发表于 2026-08-12 13:55:50">2026-08-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/13/" title="关于SnowLuma在树莓派上hook失败问题解决">关于SnowLuma在树莓派上hook失败问题解决</a><time datetime="2026-08-11T18:00:34.000Z" title="发表于 2026-08-12 02:00:34">2026-08-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/12/" title="Docker学习笔记">Docker学习笔记</a><time datetime="2026-08-11T09:03:50.000Z" title="发表于 2026-08-11 17:03:50">2026-08-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/11/" title="使用dpkg安装包遇到的缺少依赖问题">使用dpkg安装包遇到的缺少依赖问题</a><time datetime="2026-08-11T06:13:25.000Z" title="发表于 2026-08-11 14:13:25">2026-08-11</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By ljw</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.6.1</a></span></div><div class="footer_custom_text"><a href="https://icp.gov.moe/?keyword=20248777" target="_blank">萌ICP备20248777号</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.6.1"></script><script src="/js/main.js?v=5.6.1"></script><div class="js-pjax"><script>(() => {
   const parseViewBox = viewBox => {
     if (!viewBox) return null
     const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
@@ -547,4 +571,79 @@
 
   btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
   window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'd31c/yiwanfantalk',
+      'data-repo-id': 'R_kgDOTlbmSQ',
+      'data-category-id': 'Announcements',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
 })()</script></div><script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js"></script><script> const initPangu = () => { if (typeof pangu !== 'undefined') { pangu.spacingPage(); } }; document.addEventListener('DOMContentLoaded', initPangu); document.addEventListener('pjax:complete', initPangu); </script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
