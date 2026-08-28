@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>往生堂 · 网上祭祀</title>
+<style>
+  :root{
+    --bg:#0b0a09;
+    --panel:#16110d;
+    --wood:#2a1d12;
+    --wood-light:#4a3826;
+    --gold:#a98b4e;
+    --gold-dim:#6f5a34;
+    --red:#8c1f1f;
+    --red-bright:#b53a2a;
+    --ink:#d8d0c0;
+    --ink-dim:#8a8178;
+    --ash:#6b6761;
+    --serif:"KaiTi","STKaiti","SimSun","Noto Serif SC",serif;
+    --sans:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(1200px 700px at 50% -10%, #1a1511 0%, #0d0b09 55%, #060505 100%);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{ background:rgba(181,58,42,.35); }
+
+  /* ---- global overlays ---- */
+  .grain{
+    position:fixed; inset:0; z-index:60; pointer-events:none; opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size:160px 160px;
+    mix-blend-mode:overlay;
+  }
+  .vignette{
+    position:fixed; inset:0; z-index:59; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 35%, rgba(0,0,0,.55) 78%, rgba(0,0,0,.85) 100%);
+  }
+
+  /* ---- header ---- */
+  header{
+    position:relative; z-index:10;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 22px 12px;
+    border-bottom:1px solid rgba(169,139,78,.16);
+    background:linear-gradient(180deg, rgba(10,8,7,.92), rgba(10,8,7,.55));
+  }
+  .brand h1{
+    margin:0; font-family:var(--serif); font-weight:700;
+    font-size:30px; letter-spacing:8px; color:#e6d5a8;
+    text-shadow:0 0 12px rgba(181,58,42,.28), 0 1px 0 #000;
+  }
+  .brand .sub{
+    margin-top:2px; font-size:12px; letter-spacing:4px; color:var(--ink-dim);
+  }
+  .top-right{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .counter{
+    font-family:var(--serif); font-size:13px; color:var(--ink-dim);
+    padding:5px 10px; border:1px solid rgba(169,139,78,.22); border-radius:3px;
+    background:rgba(0,0,0,.35);
+  }
+  .counter b{ color:#d7c99a; font-variant-numeric:tabular-nums; font-weight:600; }
+  .btn{
+    cursor:pointer; border:1px solid rgba(169,139,78,.28); background:rgba(20,14,10,.7);
+    color:var(--ink); font-family:var(--serif); letter-spacing:2px; font-size:13px;
+    padding:6px 12px; border-radius:3px; transition:.2s;
+  }
+  .btn:hover{ background:rgba(140,31,31,.45); border-color:rgba(181,58,42,.5); }
+  .btn.muted{ opacity:.6; }
+
+  /* ---- scene ---- */
+  .scene{
+    position:relative; z-index:1;
+    max-width:760px; margin:0 auto; padding:34px 24px 20px;
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+  }
+  .warm-light{
+    position:absolute; inset:-40px; z-index:4; pointer-events:none;
+    background:radial-gradient(ellipse at 50% 72%, rgba(255,158,62,.28), rgba(255,120,40,0) 58%);
+    opacity:.05; transition:opacity 1.4s ease;
+  }
+  .fx{
+    position:absolute; inset:0; z-index:6; pointer-events:none; width:100%; height:100%;
+  }
+
+  .couplet{
+    position:absolute; top:8px; width:34px; padding:12px 6px;
+    background:linear-gradient(180deg,#1b1510,#221a12);
+    color:#b7a98e; font-family:var(--serif); font-size:17px; letter-spacing:7px;
+    writing-mode:vertical-rl; text-align:center;
+    border:1px solid #080605; box-shadow:0 3px 10px rgba(0,0,0,.65);
+    z-index:3;
+  }
+  .couplet-left{ left:2px; }
+  .couplet-right{ right:2px; }
+
+  .portrait-frame{
+    position:relative; width:150px; height:190px; overflow:hidden;
+    background:#0d0a08; border:6px solid #241a10;
+    box-shadow:0 0 0 2px #000, 0 0 24px rgba(0,0,0,.75), inset 0 0 26px rgba(0,0,0,.85);
+  }
+  .portrait-frame img{
+    width:100%; height:100%; object-fit:cover; display:none;
+    filter:grayscale(.55) sepia(.22) contrast(1.06) brightness(.86);
+  }
+  .ribbon{
+    position:absolute; top:0; left:0; width:20px; height:100%; z-index:2;
+    background:linear-gradient(180deg,#15110d,#080605); opacity:.88;
+    transform:rotate(20deg) scale(1.5); transform-origin:top left; pointer-events:none;
+  }
+  .portrait-empty{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:4px; color:#4d4841;
+    font-family:var(--serif); letter-spacing:4px; font-size:14px;
+  }
+  .portrait-empty svg{ width:66px; height:78px; opacity:.55; }
+
+  .tablet{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    width:82px; min-height:150px; padding:16px 8px; margin-top:4px;
+    background:linear-gradient(180deg,#4a3826,#241a12 62%,#18110c);
+    border-radius:10px 10px 4px 4px; color:#ead9b4;
+    box-shadow:0 5px 16px rgba(0,0,0,.7), inset 0 0 0 3px #0c0906;
+  }
+  .tablet .t-name{ font-family:var(--serif); font-size:25px; font-weight:700; letter-spacing:2px; color:#f2e3c0; }
+  .tablet .t-label{ font-family:var(--serif); font-size:13px; color:#cbb98d; letter-spacing:2px; margin-top:6px; }
+  .tablet .t-dates{ font-family:var(--serif); font-size:11px; color:#a99470; margin-top:10px; letter-spacing:1px; }
+
+  /* altar table with candles + burner */
+  .altar-wrap{ width:100%; margin-top:2px; }
+  .sacred-row{
+    display:flex; align-items:flex-end; justify-content:center; gap:54px;
+    position:relative; z-index:2;
+  }
+  .candle{ position:relative; width:46px; height:118px; cursor:pointer; }
+  .candle .glow{
+    position:absolute; left:50%; bottom:86px; width:76px; height:76px;
+    transform:translate(-50%,50%); opacity:0; transition:opacity .5s;
+    background:radial-gradient(circle, rgba(255,158,62,.4), rgba(255,120,40,0) 68%);
+  }
+  .candle .flame{
+    position:absolute; left:50%; bottom:96px; width:13px; height:23px;
+    transform:translateX(-50%); transform-origin:50% 100%;
+    background:radial-gradient(circle at 50% 76%, #fff7dc 0%, #ffd76a 30%, #ff9a3c 58%, rgba(255,90,30,0) 78%);
+    border-radius:50% 50% 50% 50% / 64% 64% 36% 36%;
+    filter:drop-shadow(0 0 7px rgba(255,168,66,.85));
+    opacity:0; transition:opacity .3s;
+  }
+  .candle .wick{ position:absolute; left:50%; bottom:92px; width:3px; height:8px; transform:translateX(-50%); background:#151009; border-radius:1px; }
+  .candle .wax{
+    position:absolute; left:50%; bottom:26px; width:30px; height:66px; transform:translateX(-50%);
+    background:linear-gradient(180deg,#f0e8d8 0%,#d6cbb8 40%,#b9ad9a 100%);
+    border-radius:3px 3px 5px 5px; box-shadow:inset 0 -8px 10px rgba(0,0,0,.18), inset 0 6px 8px rgba(255,255,255,.5);
+  }
+  .candle .wax::before{
+    content:""; position:absolute; top:10px; left:4px; width:6px; height:18px;
+    background:linear-gradient(#e9dfca,#c8bda6); border-radius:0 0 5px 5px;
+  }
+  .candle .wax::after{
+    content:""; position:absolute; top:4px; right:3px; width:5px; height:10px;
+    background:#d9cdb6; border-radius:0 0 4px 4px;
+  }
+  .candle .stand{ position:absolute; left:50%; bottom:8px; width:46px; height:20px; transform:translateX(-50%); background:linear-gradient(180deg,#3a2d1c,#1b130b); border-radius:5px; box-shadow:0 3px 6px rgba(0,0,0,.6); }
+  .candle.lit .flame{ opacity:1; animation:flicker 1.5s infinite; }
+  .candle.lit .glow{ opacity:1; }
+  @keyframes flicker{
+    0%,100%{ transform:translateX(-50%) scale(1) rotate(-1deg); opacity:.95; }
+    25%{ transform:translateX(-50%) scale(1.12,.9) rotate(2deg); opacity:1; }
+    50%{ transform:translateX(-50%) scale(.94,1.08) rotate(-2deg); opacity:.82; }
+    75%{ transform:translateX(-50%) scale(1.05,.96) rotate(1deg); opacity:.92; }
+  }
+
+  .burner-col{ display:flex; flex-direction:column; align-items:center; }
+  .incense-area{ position:relative; width:130px; height:112px; }
+  .incense{ position:absolute; bottom:0; width:5px; height:112px; }
+  .incense .stick{
+    position:absolute; bottom:0; left:0; width:100%; height:var(--h,105px);
+    background:linear-gradient(90deg,#3f2a16,#7a5530 45%,#3f2a16);
+    border-radius:2px 2px 0 0; box-shadow:0 0 3px rgba(0,0,0,.5);
+    transition:height .3s linear;
+  }
+  .incense .ember{
+    position:absolute; left:50%; bottom:calc(var(--h,105px) - 3px); width:6px; height:7px;
+    transform:translateX(-50%); border-radius:50%;
+    background:radial-gradient(circle at 50% 40%, #ffe2a8, #ff7a3c 55%, #a3261c 100%);
+    box-shadow:0 0 7px 2px rgba(255,120,60,.8);
+  }
+  .burner{
+    position:relative; width:132px; height:48px; overflow:hidden;
+    background:radial-gradient(ellipse at 50% 28%, #42382c, #191512 72%);
+    border-radius:0 0 50% 50% / 0 0 100% 100%;
+    box-shadow:inset 0 9px 12px rgba(0,0,0,.65), 0 5px 12px rgba(0,0,0,.55);
+  }
+  .burner::before{
+    content:""; position:absolute; inset:0; border-radius:inherit;
+    box-shadow:inset 0 0 0 3px #271e14, inset 0 -8px 10px #000;
+  }
+  .ash{
+    position:absolute; left:12%; right:12%; bottom:0; height:0;
+    background:linear-gradient(#7c776f,#49453e);
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+    transition:height .8s ease;
+  }
+  .table-surface{
+    height:18px; margin-top:2px; border-radius:4px;
+    background:linear-gradient(180deg,#3a2a18,#241a10 55%,#171009);
+    box-shadow:0 8px 16px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.05);
+  }
+
+  /* offerings */
+  .offer-row{ display:flex; gap:22px; margin-top:4px; }
+  .offering{
+    width:72px; height:82px; display:flex; flex-direction:column; align-items:center;
+    justify-content:center; cursor:pointer; border:1px dashed rgba(169,139,78,.22);
+    border-radius:6px; background:rgba(0,0,0,.22); transition:.3s; gap:4px;
+  }
+  .offering:hover{ border-color:rgba(181,58,42,.5); }
+  .offering .o-icon{ font-size:32px; line-height:1; filter:grayscale(.7) sepia(.2) brightness(.82); opacity:.3; transition:.3s; }
+  .offering .o-cap{ font-family:var(--serif); font-size:11px; letter-spacing:2px; color:var(--ink-dim); }
+  .offering.placed{ border-style:solid; border-color:rgba(169,139,78,.35); background:rgba(140,31,31,.12); }
+  .offering.placed .o-icon{ opacity:.98; filter:grayscale(.3) sepia(.12) brightness(1.02); }
+
+  /* fire pit */
+  .firepit{
+    position:relative; width:130px; height:78px; margin-top:4px;
+    background:radial-gradient(ellipse at 50% 30%, #33261b, #120d09 75%);
+    border-radius:50%; box-shadow:inset 0 10px 18px rgba(0,0,0,.8), 0 6px 14px rgba(0,0,0,.6);
+  }
+  .pit-coals{
+    position:absolute; left:50%; bottom:10px; width:78px; height:22px; transform:translateX(-50%);
+    background:radial-gradient(ellipse, #7a2c17, #2a1008 70%); border-radius:50%;
+    box-shadow:0 0 22px rgba(255,100,40,.35); filter:blur(.3px);
+  }
+  .pit-flames{ position:absolute; inset:0; overflow:hidden; border-radius:50%; }
+  .paper{
+    position:absolute; bottom:8px; width:22px; height:29px; border-radius:2px;
+    background:linear-gradient(160deg,#d9ca8c,#b8a55f); box-shadow:0 0 5px rgba(0,0,0,.45);
+    animation:burnpaper 2.2s ease-in forwards;
+  }
+  @keyframes burnpaper{
+    0%{ transform:translateY(-22px) rotate(0deg) scale(1); opacity:1; filter:none; }
+    42%{ transform:translateY(0) rotate(8deg) scale(.92); opacity:1; filter:brightness(.9); }
+    100%{ transform:translateY(8px) rotate(22deg) scale(.42); opacity:0; filter:brightness(.2) sepia(.45); }
+  }
+  .pit-label{ position:absolute; left:0; right:0; bottom:-24px; text-align:center; font-family:var(--serif); font-size:11px; letter-spacing:2px; color:var(--ink-dim); }
+
+  /* actions */
+  .actions{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:10px; position:relative; z-index:8; }
+  .actions .btn{ padding:9px 18px; font-size:14px; }
+
+  /* guestbook */
+  .guestbook{
+    position:relative; z-index:8; max-width:640px; margin:30px auto 0; padding:0 20px;
+  }
+  .guestbook h2{
+    font-family:var(--serif); letter-spacing:6px; font-weight:600; font-size:18px;
+    color:#d7c99a; text-align:center; margin:0 0 14px;
+  }
+  .messages{
+    display:flex; flex-direction:column; gap:10px; max-height:280px; overflow-y:auto;
+    padding:12px; background:rgba(0,0,0,.25); border:1px solid rgba(169,139,78,.14); border-radius:5px;
+  }
+  .msg{ padding:9px 11px; background:rgba(20,14,10,.55); border-left:2px solid rgba(169,139,78,.3); border-radius:2px; }
+  .msg .m-head{ display:flex; justify-content:space-between; font-size:12px; color:var(--ink-dim); margin-bottom:3px; }
+  .msg .m-name{ color:#cbb98d; font-family:var(--serif); letter-spacing:1px; }
+  .msg .m-text{ font-size:14px; color:var(--ink); white-space:pre-wrap; }
+  .msg.eerie{ border-left-color:rgba(181,58,42,.45); background:rgba(140,31,31,.12); }
+  .guestbook form{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .guestbook input, .guestbook textarea{
+    background:rgba(0,0,0,.3); border:1px solid rgba(169,139,78,.22); color:var(--ink);
+    border-radius:3px; padding:8px 10px; font-family:var(--sans); font-size:13px;
+  }
+  .guestbook input{ flex:0 0 120px; }
+  .guestbook textarea{ flex:1 1 260px; min-height:38px; resize:vertical; }
+
+  footer{
+    position:relative; z-index:8; text-align:center; padding:34px 20px 40px;
+    font-family:var(--serif); font-size:12px; letter-spacing:2px; color:#5f5850;
+  }
+  footer .f-line{ margin-top:4px; }
+
+  /* modal */
+  .modal{
+    position:fixed; inset:0; z-index:120; display:none; align-items:center; justify-content:center;
+    background:rgba(0,0,0,.72); padding:20px;
+  }
+  .modal.open{ display:flex; }
+  .modal-card{
+    width:min(440px,100%); max-height:88vh; overflow-y:auto;
+    background:linear-gradient(180deg,#18120c,#0f0b08); border:1px solid rgba(169,139,78,.3);
+    border-radius:6px; padding:22px; box-shadow:0 18px 60px rgba(0,0,0,.8);
+  }
+  .modal-card h2{ margin:0 0 16px; font-family:var(--serif); letter-spacing:4px; color:#e6d5a8; font-size:20px; text-align:center; }
+  .field{ margin-bottom:14px; }
+  .field label{ display:block; font-size:12px; letter-spacing:2px; color:var(--ink-dim); margin-bottom:5px; font-family:var(--serif); }
+  .field input[type=text], .field input[type=date]{
+    width:100%; background:rgba(0,0,0,.35); border:1px solid rgba(169,139,78,.24); color:var(--ink);
+    border-radius:3px; padding:9px 10px; font-size:14px;
+  }
+  .photo-controls{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .photo-thumb{ width:64px; height:80px; object-fit:cover; border:1px solid rgba(169,139,78,.3); border-radius:3px; background:#000; }
+  .modal-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap; }
+  .btn.primary{ background:rgba(140,31,31,.55); border-color:rgba(181,58,42,.5); }
+  .btn.danger{ border-color:rgba(181,58,42,.4); color:#d8a28f; }
+
+  #toast{
+    position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(20px);
+    z-index:140; background:rgba(16,11,8,.94); border:1px solid rgba(169,139,78,.35);
+    color:var(--ink); padding:9px 18px; border-radius:4px; font-family:var(--serif); letter-spacing:2px;
+    opacity:0; pointer-events:none; transition:.3s;
+  }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+  @media (max-width:560px){
+    .brand h1{ font-size:24px; letter-spacing:5px; }
+    .sacred-row{ gap:30px; }
+    .couplet{ display:none; }
+    .scene{ padding:24px 12px 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="vignette"></div>
+
+  <header>
+    <div class="brand">
+      <h1>往生堂</h1>
+      <div class="sub">网上祭祀 · 谨以薄酒，遥寄哀思</div>
+    </div>
+    <div class="top-right">
+      <div class="counter">您是第 <b id="hitCount">0</b> 位祭拜者</div>
+      <button class="btn" id="soundBtn" type="button">祭乐</button>
+      <button class="btn" id="settingsBtn" type="button">设置灵位</button>
+    </div>
+  </header>
+
+  <main class="scene" id="scene">
+    <div class="warm-light" id="warmLight"></div>
+    <canvas class="fx" id="fx"></canvas>
+
+    <div class="couplet couplet-left">音容宛在</div>
+    <div class="couplet couplet-right">德泽长存</div>
+
+    <div class="portrait-frame" id="portraitFrame">
+      <img id="portrait" alt="遗像">
+      <div class="ribbon"></div>
+      <div class="portrait-empty" id="portraitEmpty">
+        <svg viewBox="0 0 100 120" fill="#3b3732" aria-hidden="true">
+          <circle cx="50" cy="34" r="20"/>
+          <path d="M20 110 C20 76 34 66 50 66 C66 66 80 76 80 110 Z"/>
+        </svg>
+        <span>遗 像</span>
+      </div>
+    </div>
+
+    <div class="tablet" id="tablet">
+      <span class="t-name" id="tabletName">未具名</span>
+      <span class="t-label">之灵位</span>
+      <span class="t-dates" id="tabletDates">生卒不详</span>
+    </div>
+
+    <div class="altar-wrap">
+      <div class="sacred-row">
+        <div class="candle" id="candle_left" title="点击点亮 / 熄灭">
+          <div class="glow"></div>
+          <div class="flame"></div>
+          <div class="wick"></div>
+          <div class="wax"></div>
+          <div class="stand"></div>
+        </div>
+        <div class="burner-col">
+          <div class="incense-area" id="incenseArea"></div>
+          <div class="burner" id="burner"><div class="ash" id="ash"></div></div>
+        </div>
+        <div class="candle" id="candle_right" title="点击点亮 / 熄灭">
+          <div class="glow"></div>
+          <div class="flame"></div>
+          <div class="wick"></div>
+          <div class="wax"></div>
+          <div class="stand"></div>
+        </div>
+      </div>
+      <div class="table-surface"></div>
+    </div>
+
+    <div class="offer-row">
+      <div class="offering" data-type="fruit" title="点击摆放供果">
+        <span class="o-icon">🍎</span><span class="o-cap">供果</span>
+      </div>
+      <div class="offering" data-type="wine" title="点击摆放祭酒">
+        <span class="o-icon">🍶</span><span class="o-cap">祭酒</span>
+      </div>
+      <div class="offering" data-type="cake" title="点击摆放糕点">
+        <span class="o-icon">🥮</span><span class="o-cap">糕点</span>
+      </div>
+    </div>
+
+    <div class="firepit" id="firepit">
+      <div class="pit-flames" id="pitFlames"></div>
+      <div class="pit-coals"></div>
+      <div class="pit-label">已焚纸钱 <b id="paperCount">0</b> 张</div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="actIncense" type="button">上香</button>
+      <button class="btn" id="actCandle" type="button">点烛</button>
+      <button class="btn" id="actPaper" type="button">烧纸钱</button>
+    </div>
+  </main>
+
+  <section class="guestbook">
+    <h2>祭 拜 留 言</h2>
+    <div class="messages" id="messages"></div>
+    <form id="msgForm">
+      <input id="msgName" type="text" placeholder="您的称呼" maxlength="12">
+      <textarea id="msgText" placeholder="写下您的哀思…" maxlength="200"></textarea>
+      <button class="btn primary" type="submit">上香留言</button>
+    </form>
+  </section>
+
+  <footer>
+    <div>往生堂 · 怀念网</div>
+    <div class="f-line">本页数据仅保存在您的设备，不联网、不同步</div>
+    <div class="f-line">© 2003 — 2026</div>
+  </footer>
+
+  <div class="modal" id="settingsModal">
+    <div class="modal-card">
+      <h2>设置灵位</h2>
+      <div class="field">
+        <label>逝者姓名</label>
+        <input id="nameInput" type="text" placeholder="请输入姓名" maxlength="12">
+      </div>
+      <div class="field">
+        <label>生年</label>
+        <input id="birthInput" type="date">
+      </div>
+      <div class="field">
+        <label>卒年</label>
+        <input id="deathInput" type="date">
+      </div>
+      <div class="field">
+        <label>遗像</label>
+        <div class="photo-controls">
+          <img class="photo-thumb" id="photoThumb" alt="">
+          <input id="photoInput" type="file" accept="image/*" style="display:none">
+          <button class="btn" id="pickPhoto" type="button">选择图片</button>
+          <button class="btn danger" id="clearPhoto" type="button">清除</button>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn danger" id="resetSettings" type="button">重置一切</button>
+        <button class="btn" id="closeSettings" type="button">取消</button>
+        <button class="btn primary" id="saveSettings" type="button">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+  var KEY = 'wangshengtang_v2';
+  var INCENSE_DUR = 5 * 60 * 1000; // 每支香燃 5 分钟
+  var MAX_INCENSE = 3;
+
+  var $ = function(s){ return document.querySelector(s); };
+  var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  function defaults(){
+    return {
+      name:'ljw', birth:'2009-11-09', death:'2026-08-27', photo:'',
+      candles:{ left:false, right:false },
+      incense:[], ash:0, uid:0,
+      offerings:[], paperBurned:0,
+      messages:[], hits:0, muted:false
+    };
+  }
+
+  var S = load();
+
+  function load(){
+    var s = defaults();
+    try{
+      var raw = localStorage.getItem(KEY);
+      if(raw){
+        var p = JSON.parse(raw);
+        s = Object.assign(defaults(), p);
+      }
+    }catch(e){ /* ignore */ }
+    s.hits = (s.hits || 0) + 1;
+    save(s);
+    return s;
+  }
+
+  function save(){
+    try{
+      localStorage.setItem(KEY, JSON.stringify(S));
+    }catch(e){
+      toast('存储失败：本机空间不足，请缩小遗像');
+    }
+  }
+
+  var toastTimer = null;
+  function toast(text){
+    var el = $('#toast');
+    el.textContent = text;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2400);
+  }
+
+  /* ---------- sound ---------- */
+  var Sound = (function(){
+    var ctx = null, master = null;
+    function ensure(){
+      if(ctx) return;
+      try{
+        var AC = window.AudioContext || window.webkitAudioContext;
+        ctx = new AC();
+      }catch(e){ return; }
+      master = ctx.createGain();
+      master.gain.value = S.muted ? 0 : 0.7;
+      master.connect(ctx.destination);
+      build();
+      schedule();
+    }
+    function noiseBuffer(){
+      var len = Math.floor(ctx.sampleRate * 2);
+      var buf = ctx.createBuffer(1, len, ctx.sampleRate);
+      var d = buf.getChannelData(0);
+      for(var i=0;i<len;i++){ d[i] = Math.random()*2-1; }
+      return buf;
+    }
+    function build(){
+      var dg = ctx.createGain(); dg.gain.value = 0.04;
+      var dlp = ctx.createBiquadFilter(); dlp.type='lowpass'; dlp.frequency.value = 110;
+      var o1 = ctx.createOscillator(); o1.type='sine'; o1.frequency.value = 46;
+      var o2 = ctx.createOscillator(); o2.type='sine'; o2.frequency.value = 50.3;
+      o1.connect(dlp); o2.connect(dlp); dlp.connect(dg); dg.connect(master);
+      o1.start(); o2.start();
+      var lfo = ctx.createOscillator(); lfo.type='sine'; lfo.frequency.value = 0.06;
+      var lg = ctx.createGain(); lg.gain.value = 0.018;
+      lfo.connect(lg); lg.connect(dg.gain); lfo.start();
+
+      var ws = ctx.createBufferSource(); ws.buffer = noiseBuffer(); ws.loop = true;
+      var wlp = ctx.createBiquadFilter(); wlp.type='lowpass'; wlp.frequency.value = 220;
+      var wg = ctx.createGain(); wg.gain.value = 0.012;
+      ws.connect(wlp); wlp.connect(wg); wg.connect(master); ws.start();
+    }
+    function bell(){
+      if(!ctx) return;
+      var t = ctx.currentTime;
+      var o = ctx.createOscillator(); o.type='sine'; o.frequency.value = 880;
+      var g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.05, t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+2.4);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t+2.5);
+    }
+    function tok(){
+      if(!ctx) return;
+      var t = ctx.currentTime, dur = 0.09;
+      var s = ctx.createBufferSource(); s.buffer = noiseBuffer(); s.loop = false;
+      var bp = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value = 640; bp.Q.value = 6;
+      var g = ctx.createGain(); g.gain.setValueAtTime(0.08, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+      s.connect(bp); bp.connect(g); g.connect(master); s.start(t); s.stop(t+dur+0.02);
+    }
+    function whisper(){
+      if(!ctx) return;
+      var t = ctx.currentTime, dur = 0.6 + Math.random()*0.8;
+      var s = ctx.createBufferSource(); s.buffer = noiseBuffer(); s.loop = true;
+      var bp = ctx.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value = 1800 + Math.random()*1600; bp.Q.value = 1.5;
+      var g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t);
+      g.gain.linearRampToValueAtTime(0.018, t+0.12);
+      g.gain.linearRampToValueAtTime(0.0001, t+dur);
+      s.connect(bp); bp.connect(g); g.connect(master); s.start(t); s.stop(t+dur+0.1);
+    }
+    function schedule(){
+      (function loopBell(){
+        setTimeout(function(){
+          if(ctx && !S.muted){
+            if(Math.random() < 0.55) bell(); else tok();
+          }
+          loopBell();
+        }, 8000 + Math.random()*14000);
+      })();
+      (function loopWhisper(){
+        setTimeout(function(){
+          if(ctx && !S.muted) whisper();
+          loopWhisper();
+        }, 20000 + Math.random()*22000);
+      })();
+    }
+    function setMuted(m){
+      S.muted = m;
+      if(ctx && master){
+        master.gain.setTargetAtTime(m ? 0 : 0.7, ctx.currentTime, 0.15);
+      }
+    }
+    return { ensure:ensure, setMuted:setMuted, bell:bell, tok:tok };
+  })();
+
+  /* ---------- render ---------- */
+  function renderCounter(){ $('#hitCount').textContent = S.hits; }
+
+  function renderPortrait(){
+    var img = $('#portrait'), empty = $('#portraitEmpty');
+    if(S.photo){
+      img.src = S.photo; img.style.display = 'block'; empty.style.display = 'none';
+    }else{
+      img.removeAttribute('src'); img.style.display = 'none'; empty.style.display = 'flex';
+    }
+  }
+
+  function renderTablet(){
+    $('#tabletName').textContent = S.name || '未具名';
+    var dates;
+    if(S.birth || S.death){
+      dates = (S.birth ? fmtDate(S.birth) : '？') + ' — ' + (S.death ? fmtDate(S.death) : '？');
+    }else{
+      dates = '生卒不详';
+    }
+    $('#tabletDates').textContent = dates;
+  }
+
+  function fmtDate(iso){
+    if(!iso) return '';
+    var p = iso.split('-');
+    if(p.length < 3) return iso;
+    return p[0] + '年' + parseInt(p[1],10) + '月' + parseInt(p[2],10) + '日';
+  }
+
+  function renderCandles(){
+    $('#candle_left').classList.toggle('lit', !!S.candles.left);
+    $('#candle_right').classList.toggle('lit', !!S.candles.right);
+    updateWarmLight();
+  }
+
+  function updateWarmLight(){
+    var n = (S.candles.left ? 1 : 0) + (S.candles.right ? 1 : 0);
+    var op = n === 0 ? 0.05 : (0.16 + n*0.13);
+    $('#warmLight').style.opacity = String(op);
+  }
+
+  function renderIncense(){
+    var area = $('#incenseArea');
+    area.innerHTML = '';
+    S.incense.forEach(function(st, idx){
+      var el = document.createElement('div');
+      el.className = 'incense';
+      el.dataset.id = st.uid;
+      el.style.left = (18 + idx*26) + 'px';
+      el.innerHTML = '<div class="stick"></div><div class="ember"></div>';
+      area.appendChild(el);
+    });
+    updateIncense();
+  }
+
+  function updateIncense(){
+    var now = Date.now();
+    var els = $$('#incenseArea .incense');
+    var finished = [];
+    S.incense.forEach(function(st, idx){
+      var el = els[idx]; if(!el) return;
+      var rem = Math.max(0, 1 - (now - st.t0)/st.dur);
+      var h = Math.max(3, Math.round(105 * rem));
+      el.style.setProperty('--h', h + 'px');
+      if(rem <= 0) finished.push(idx);
+    });
+    if(finished.length){
+      S.ash += finished.length;
+      S.incense = S.incense.filter(function(_, i){ return finished.indexOf(i) === -1; });
+      save(); renderIncense(); renderAsh();
+    }
+  }
+
+  function renderAsh(){
+    $('#ash').style.height = Math.min(32, 5 + S.ash*2.4) + 'px';
+  }
+
+  function renderOfferings(){
+    $$('.offering').forEach(function(el){
+      el.classList.toggle('placed', S.offerings.indexOf(el.dataset.type) !== -1);
+    });
+  }
+
+  function renderPaperCount(){ $('#paperCount').textContent = S.paperBurned; }
+
+  function renderMessages(){
+    var box = $('#messages');
+    box.innerHTML = '';
+    if(!S.messages.length){
+      var empty = document.createElement('div');
+      empty.className = 'msg';
+      empty.innerHTML = '<div class="m-text" style="color:var(--ink-dim)">尚未有人留言。</div>';
+      box.appendChild(empty);
+      return;
+    }
+    S.messages.slice().reverse().forEach(function(m){
+      var el = document.createElement('div');
+      el.className = 'msg' + (m.eerie ? ' eerie' : '');
+      var name = (m.name || '访客');
+      el.innerHTML =
+        '<div class="m-head"><span class="m-name">'+ esc(name) +'</span><span>'+ timeAgo(m.at) +'</span></div>' +
+        '<div class="m-text">'+ esc(m.text) +'</div>';
+      box.appendChild(el);
+    });
+  }
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  function timeAgo(ts){
+    var d = Date.now() - ts;
+    var m = Math.floor(d/60000);
+    if(m < 1) return '刚刚';
+    if(m < 60) return m + ' 分钟前';
+    var h = Math.floor(m/60);
+    if(h < 24) return h + ' 小时前';
+    var days = Math.floor(h/24);
+    return days + ' 天前';
+  }
+
+  /* ---------- particles ---------- */
+  var particles = [];
+  function spawnSmoke(x, y){
+    particles.push({ type:'smoke', x:x, y:y, vx:(Math.random()-0.5)*0.12,
+      vy:-(0.25+Math.random()*0.35), r:2.5+Math.random()*3, life:0,
+      max:150+Math.random()*150, color:'#b4afa8' });
+  }
+  function spawnEmber(x, y){
+    particles.push({ type:'ember', x:x, y:y, vx:(Math.random()-0.5)*0.7,
+      vy:-(0.5+Math.random()*0.9), r:1+Math.random()*1.6, life:0,
+      max:28+Math.random()*34, color:'#ff7832' });
+  }
+
+  function updateParticles(){
+    for(var i=particles.length-1; i>=0; i--){
+      var p = particles[i];
+      p.life++;
+      if(p.type === 'smoke'){
+        p.x += p.vx + Math.sin(p.life*0.05 + p.r)*0.08;
+        p.y += p.vy;
+        p.r += 0.035;
+        p.alpha = 0.34 * (1 - p.life/p.max);
+      }else{
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha = (1 - p.life/p.max) * 0.9;
+      }
+      if(p.life >= p.max || p.alpha <= 0){ particles.splice(i, 1); }
+    }
+  }
+
+  function drawParticles(){
+    var fx = $('#fx');
+    var dpr = window.devicePixelRatio || 1;
+    var rect = fx.getBoundingClientRect();
+    var w = Math.max(1, Math.round(rect.width*dpr));
+    var h = Math.max(1, Math.round(rect.height*dpr));
+    if(fx.width !== w || fx.height !== h){ fx.width = w; fx.height = h; }
+    var ctx = fx.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, rect.width, rect.height);
+    particles.forEach(function(p){
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  function spawnSmokeFromIncense(){
+    var now = Date.now();
+    var fx = $('#fx');
+    var rect = fx.getBoundingClientRect();
+    $$('.incense').forEach(function(el){
+      var st = null;
+      for(var i=0;i<S.incense.length;i++){
+        if(String(S.incense[i].uid) === el.dataset.id){ st = S.incense[i]; break; }
+      }
+      if(!st) return;
+      var rem = Math.max(0, 1 - (now - st.t0)/st.dur);
+      if(rem <= 0) return;
+      var ember = el.querySelector('.ember');
+      if(!ember) return;
+      var r = ember.getBoundingClientRect();
+      var x = r.left - rect.left + r.width/2;
+      var y = r.top - rect.top + r.height/2;
+      if(Math.random() < 0.4) spawnSmoke(x, y);
+    });
+  }
+
+  function loop(){
+    updateIncense();
+    spawnSmokeFromIncense();
+    updateParticles();
+    drawParticles();
+    requestAnimationFrame(loop);
+  }
+
+  /* ---------- actions ---------- */
+  function lightIncense(){
+    Sound.ensure();
+    if(S.incense.length >= MAX_INCENSE){ toast('香炉已满，待香燃尽后再上'); return; }
+    S.uid = (S.uid || 0) + 1;
+    S.incense.push({ uid:S.uid, t0:Date.now(), dur:INCENSE_DUR });
+    save(); renderIncense();
+    Sound.tok();
+  }
+
+  function toggleCandle(side){
+    Sound.ensure();
+    S.candles[side] = !S.candles[side];
+    save(); renderCandles();
+    if(S.candles[side]) Sound.tok();
+  }
+
+  function toggleAllCandles(){
+    var allLit = S.candles.left && S.candles.right;
+    S.candles.left = !allLit;
+    S.candles.right = !allLit;
+    save(); renderCandles();
+    Sound.ensure(); Sound.tok();
+  }
+
+  function burnPaper(){
+    Sound.ensure();
+    var flames = $('#pitFlames');
+    for(var i=0;i<3;i++){
+      var p = document.createElement('div');
+      p.className = 'paper';
+      p.style.left = (10 + Math.random()*68) + '%';
+      p.style.animationDelay = (Math.random()*0.35) + 's';
+      flames.appendChild(p);
+      (function(node){ setTimeout(function(){ node.remove(); }, 2300); })(p);
+    }
+    S.paperBurned += 3;
+    save(); renderPaperCount();
+    emberBurst();
+  }
+
+  function emberBurst(){
+    var pit = $('#firepit');
+    var fx = $('#fx');
+    var count = 0;
+    var iv = setInterval(function(){
+      var pr = pit.getBoundingClientRect();
+      var cr = fx.getBoundingClientRect();
+      var cx = pr.left - cr.left + pr.width/2 + (Math.random()-0.5)*34;
+      var cy = pr.top - cr.top - 8;
+      spawnEmber(cx, cy);
+      count++;
+      if(count > 20) clearInterval(iv);
+    }, 60);
+  }
+
+  /* ---------- guestbook ---------- */
+  var EERIE = ['香火接到了。', '我回来看你了。', '纸钱收到了，别再烧了。', '这里有点冷。', '你还记得我吗？'];
+  function addMessage(name, text, eerie){
+    S.messages.push({ name:name, text:text, at:Date.now(), eerie:!!eerie });
+    renderMessages(); save();
+  }
+
+  /* ---------- settings ---------- */
+  function openSettings(){
+    $('#nameInput').value = S.name;
+    $('#birthInput').value = S.birth;
+    $('#deathInput').value = S.death;
+    renderThumb();
+    $('#settingsModal').classList.add('open');
+  }
+  function closeSettings(){ $('#settingsModal').classList.remove('open'); }
+  function renderThumb(){
+    var t = $('#photoThumb');
+    if(S.photo){ t.src = S.photo; t.style.display = 'inline-block'; }
+    else{ t.removeAttribute('src'); t.style.display = 'none'; }
+  }
+
+  function handleImage(file){
+    if(!file || !file.type.match(/^image\//)) return;
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function(){
+      var max = 800;
+      var w = img.width, h = img.height;
+      var scale = Math.min(1, max / Math.max(w, h));
+      w = Math.max(1, Math.round(w*scale));
+      h = Math.max(1, Math.round(h*scale));
+      var c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      var cx = c.getContext('2d');
+      try{ cx.filter = 'grayscale(0.35) sepia(0.2)'; }catch(e){}
+      cx.drawImage(img, 0, 0, w, h);
+      try{
+        var data = c.toDataURL('image/jpeg', 0.78);
+        S.photo = data;
+        renderPortrait(); renderThumb(); save();
+      }catch(e){
+        toast('图片处理失败，请换一张');
+      }
+      URL.revokeObjectURL(url);
+    };
+    img.onerror = function(){ toast('无法读取图片'); URL.revokeObjectURL(url); };
+    img.src = url;
+  }
+
+  function resetAll(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  }
+
+  /* ---------- sound button ---------- */
+  function updateSoundBtn(){
+    var b = $('#soundBtn');
+    b.textContent = S.muted ? '静音' : '祭乐';
+    b.classList.toggle('muted', S.muted);
+  }
+
+  /* ---------- wire events ---------- */
+  function bind(){
+    $('#actIncense').addEventListener('click', lightIncense);
+    $('#actCandle').addEventListener('click', toggleAllCandles);
+    $('#actPaper').addEventListener('click', burnPaper);
+
+    $('#candle_left').addEventListener('click', function(){ toggleCandle('left'); });
+    $('#candle_right').addEventListener('click', function(){ toggleCandle('right'); });
+
+    $$('.offering').forEach(function(el){
+      el.addEventListener('click', function(){
+        var type = el.dataset.type;
+        var i = S.offerings.indexOf(type);
+        if(i === -1){ S.offerings.push(type); } else { S.offerings.splice(i, 1); }
+        save(); renderOfferings();
+        Sound.ensure(); Sound.tok();
+      });
+    });
+
+    $('#soundBtn').addEventListener('click', function(){
+      Sound.ensure();
+      Sound.setMuted(!S.muted);
+      updateSoundBtn(); save();
+    });
+
+    $('#settingsBtn').addEventListener('click', openSettings);
+    $('#closeSettings').addEventListener('click', closeSettings);
+    $('#resetSettings').addEventListener('click', function(){
+      if(window.confirm('确定重置一切？所有本机保存的灵位与祭拜记录都会被清除。')) resetAll();
+    });
+    $('#saveSettings').addEventListener('click', function(){
+      S.name = $('#nameInput').value.trim();
+      S.birth = $('#birthInput').value;
+      S.death = $('#deathInput').value;
+      save(); renderTablet(); renderPortrait(); closeSettings();
+    });
+
+    $('#pickPhoto').addEventListener('click', function(){ $('#photoInput').click(); });
+    $('#photoInput').addEventListener('change', function(e){
+      if(e.target.files && e.target.files[0]) handleImage(e.target.files[0]);
+      e.target.value = '';
+    });
+    $('#clearPhoto').addEventListener('click', function(){
+      S.photo = ''; save(); renderPortrait(); renderThumb();
+    });
+
+    $('#msgForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      var name = $('#msgName').value.trim();
+      var text = $('#msgText').value.trim();
+      if(!text){ toast('请写下您的哀思'); return; }
+      addMessage(name || '访客', text, false);
+      $('#msgName').value = '';
+      $('#msgText').value = '';
+      if(Math.random() < 0.14){
+        setTimeout(function(){
+          addMessage('访客', EERIE[Math.floor(Math.random()*EERIE.length)], true);
+        }, 1600 + Math.random()*1800);
+      }
+    });
+
+    $('#settingsModal').addEventListener('click', function(e){
+      if(e.target === this) closeSettings();
+    });
+  }
+
+  /* ---------- init ---------- */
+  function init(){
+    renderCounter();
+    renderPortrait();
+    renderTablet();
+    renderCandles();
+    renderIncense();
+    renderAsh();
+    renderOfferings();
+    renderPaperCount();
+    renderMessages();
+    updateSoundBtn();
+    bind();
+    requestAnimationFrame(loop);
+    if(!S.name && !S.photo) openSettings();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
