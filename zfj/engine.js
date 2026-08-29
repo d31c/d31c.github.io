@@ -376,7 +376,21 @@
   // Generate a random valid 3-plane layout (used for layout defaults/shuffle).
   function randomLayout(rng) {
     rng = rng || Math.random;
-    var arr = ALL_PLANES.slice();
+    // Prefer head positions in the central 6x6 zone, where every plane can
+    // rotate to at least two directions. Fall back to the full board if the
+    // central zone somehow cannot hold three planes.
+    var zone = [];
+    for (var i = 0; i < ALL_PLANES.length; i++) {
+      var p = ALL_PLANES[i];
+      if (p.headR >= 2 && p.headR <= 7 && p.headC >= 2 && p.headC <= 7) zone.push(p);
+    }
+    var chosen = pickNonOverlapping(zone, rng);
+    if (chosen.length < PLANE_COUNT) chosen = pickNonOverlapping(ALL_PLANES, rng);
+    return chosen;
+  }
+
+  function pickNonOverlapping(pool, rng) {
+    var arr = pool.slice();
     for (var i = arr.length - 1; i > 0; i--) {
       var j = Math.floor(rng() * (i + 1));
       var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
@@ -396,14 +410,12 @@
   }
 
   // Attempt to move plane at index pi by (dr, dc); returns new planes or null.
+  // Editing is free: only the board edge is enforced here; overlap is validated
+  // separately when the layout is confirmed.
   function movePlane(planes, pi, dr, dc) {
     var p = planes[pi];
     var next = planeAt(p.headR + dr, p.headC + dc, p.k);
     if (!next) return null;
-    for (var i = 0; i < planes.length; i++) {
-      if (i === pi) continue;
-      if ((next.cellsMask & planes[i].cellsMask) !== 0n) return null;
-    }
     var copy = planes.slice();
     copy[pi] = next;
     return copy;
@@ -412,15 +424,26 @@
   // Attempt to rotate plane at index pi clockwise; returns new planes or null.
   function rotatePlane(planes, pi) {
     var p = planes[pi];
-    var next = planeAt(p.headR, p.headC, (p.k + 1) % 4);
-    if (!next) return null;
-    for (var i = 0; i < planes.length; i++) {
-      if (i === pi) continue;
-      if ((next.cellsMask & planes[i].cellsMask) !== 0n) return null;
+    // Cycle clockwise through the other three orientations and take the first
+    // one that fits on the board.
+    for (var step = 1; step <= 3; step++) {
+      var next = planeAt(p.headR, p.headC, (p.k + step) % 4);
+      if (!next) continue;
+      var copy = planes.slice();
+      copy[pi] = next;
+      return copy;
     }
-    var copy = planes.slice();
-    copy[pi] = next;
-    return copy;
+    return null;
+  }
+
+  // True when any two planes share a cell.
+  function hasOverlap(planes) {
+    for (var i = 0; i < planes.length; i++) {
+      for (var j = i + 1; j < planes.length; j++) {
+        if ((planes[i].cellsMask & planes[j].cellsMask) !== 0n) return true;
+      }
+    }
+    return false;
   }
 
   return {
@@ -436,6 +459,7 @@
     resultForBoard: resultForBoard,
     randomLayout: randomLayout,
     movePlane: movePlane,
-    rotatePlane: rotatePlane
+    rotatePlane: rotatePlane,
+    hasOverlap: hasOverlap
   };
 });

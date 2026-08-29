@@ -69,6 +69,37 @@
     border-radius: 6px;
     padding: 2px;
   }
+  .board-frame {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    grid-template-rows: 20px 1fr;
+    gap: 3px;
+  }
+  .board-frame .corner { grid-area: 1 / 1; }
+  .board-frame .col-labels {
+    grid-area: 1 / 2;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 2px;
+    padding: 0 2px;
+  }
+  .board-frame .row-labels {
+    grid-area: 2 / 1;
+    display: grid;
+    grid-template-rows: repeat(10, 1fr);
+    gap: 2px;
+    padding: 2px 0;
+  }
+  .board-frame .board { grid-area: 2 / 2; }
+  .board-frame .col-labels div,
+  .board-frame .row-labels div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
   .cell {
     position: relative;
     background: var(--water);
@@ -90,6 +121,7 @@
     background: rgba(255,255,255,.85);
   }
   .cell.sel { outline: 3px solid #fff; outline-offset: -1px; z-index: 2; }
+  .cell.overlap { outline: 2px solid #ff3860; outline-offset: -1px; box-shadow: inset 0 0 0 999px rgba(255,56,96,.38); }
 
   .cell.hit { overflow: hidden; }
   .cell.hit::before {
@@ -203,7 +235,12 @@
           <b>我方棋盘</b>
           <span class="score" id="layoutPlaneInfo">第 1 架</span>
         </div>
-        <div class="board" id="layoutBoard"></div>
+        <div class="board-frame">
+          <div class="corner"></div>
+          <div class="col-labels"></div>
+          <div class="row-labels"></div>
+          <div class="board" id="layoutBoard"></div>
+        </div>
         <div class="hint">点击一架飞机以选中它，用方向键 / 右侧按钮移动，圆圈按钮旋转方向。</div>
       </div>
 
@@ -246,7 +283,12 @@
           <b>我方棋盘</b>
           <span class="score" id="myScore">机头 0/3</span>
         </div>
-        <div class="board" id="myBoard"></div>
+        <div class="board-frame">
+          <div class="corner"></div>
+          <div class="col-labels"></div>
+          <div class="row-labels"></div>
+          <div class="board" id="myBoard"></div>
+        </div>
         <div class="hint">电脑轰炸你飞机的结果</div>
       </div>
       <div class="card">
@@ -254,7 +296,12 @@
           <b>敌方棋盘</b>
           <span class="score" id="enemyScore">机头 0/3</span>
         </div>
-        <div class="board" id="enemyBoard"></div>
+        <div class="board-frame">
+          <div class="corner"></div>
+          <div class="col-labels"></div>
+          <div class="row-labels"></div>
+          <div class="board" id="enemyBoard"></div>
+        </div>
         <div class="hint">轮到你了就点击敌方棋盘进行轰炸</div>
       </div>
     </div>
@@ -282,6 +329,19 @@
   var Z = window.ZFJ;
   var COLS = 'ABCDEFGHIJ';
   function label(idx) { return COLS[idx % 10] + (Math.floor(idx / 10) + 1); }
+
+  function initBoardLabels() {
+    var colHtml = '';
+    var rowHtml = '';
+    for (var i = 0; i < 10; i++) colHtml += '<div>' + COLS[i] + '</div>';
+    for (var r = 0; r < 10; r++) rowHtml += '<div>' + (r + 1) + '</div>';
+    document.querySelectorAll('.board-frame .col-labels').forEach(function (el) {
+      el.innerHTML = colHtml;
+    });
+    document.querySelectorAll('.board-frame .row-labels').forEach(function (el) {
+      el.innerHTML = rowHtml;
+    });
+  }
 
   var state = {
     phase: 'layout',
@@ -342,19 +402,35 @@
     return map;
   }
 
+  function overlapCellSet(planes) {
+    var seen = {};
+    var dup = {};
+    for (var i = 0; i < planes.length; i++) {
+      for (var j = 0; j < planes[i].cells.length; j++) {
+        var c = planes[i].cells[j];
+        if (seen[c]) dup[c] = true;
+        seen[c] = true;
+      }
+    }
+    return dup;
+  }
+
   function renderLayout() {
     var map = planeCellMap(state.planes);
+    var dup = overlapCellSet(state.planes);
+    var overlapping = Z.hasOverlap(state.planes);
     var html = '';
     for (var i = 0; i < Z.CELL_COUNT; i++) {
       var cls = 'cell';
       if (map[i]) {
         cls += map[i].type === 'head' ? ' plane-head' : ' plane-body';
         if (map[i].plane === state.selected) cls += ' sel';
+        if (dup[i]) cls += ' overlap';
       }
       html += '<div class="' + cls + '" data-idx="' + i + '"></div>';
     }
     el.layoutBoard.innerHTML = html;
-    el.layoutPlaneInfo.textContent = '第 ' + (state.selected + 1) + ' 架';
+    el.layoutPlaneInfo.textContent = '第 ' + (state.selected + 1) + ' 架' + (overlapping ? ' · 有重叠' : '');
   }
 
   function renderBattle() {
@@ -523,6 +599,7 @@
 
   document.getElementById('confirmBtn').addEventListener('click', function () {
     if (state.planes.length !== Z.PLANE_COUNT) { alert('请摆放 3 架飞机'); return; }
+    if (Z.hasOverlap(state.planes)) { alert('飞机之间有重叠，请先移动或旋转到不重叠的位置再确认'); return; }
     startBattle();
   });
 
@@ -534,6 +611,7 @@
 
   document.getElementById('againBtn').addEventListener('click', resetToLayout);
 
+  initBoardLabels();
   resetToLayout();
 })();
 </script>
