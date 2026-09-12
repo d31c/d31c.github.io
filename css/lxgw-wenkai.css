@@ -1,0 +1,8 @@
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-bold.css");
+
+#site-title,
+#recent-posts .recent-post-item .article-title,
+#post-info .post-title {
+  font-family: "LXGW WenKai", "霞鹜文楷", "Kaiti SC", KaiTi, STKaiti, cursive;
+}
