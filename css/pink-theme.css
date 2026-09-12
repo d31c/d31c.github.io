@@ -1,0 +1,267 @@
+/* White-first theme with restrained pink accents */
+:root {
+  --global-bg: #f8f9fc;
+  --font-color: #4c4948;
+  --hr-border: #ececf1;
+  --hr-before-color: #f4bfd2;
+  --search-bg: #ffffff;
+  --search-input-color: #4c4948;
+  --search-a-color: #4c4948;
+  --tab-border-color: #ececf1;
+  --tab-button-bg: #f7f8fb;
+  --tab-button-color: #747174;
+  --tab-button-hover-bg: #f4f5f8;
+  --tab-button-active-bg: #ffffff;
+  --card-bg: #ffffff;
+  --card-meta: #828282;
+  --sidebar-bg: #ffffff;
+  --sidebar-menu-bg: #ffffff;
+  --btn-hover-color: #f5a9c3;
+  --btn-color: #ffffff;
+  --btn-bg: #f79dbc;
+  --text-bg-hover: rgba(247, 157, 188, .12);
+  --light-grey: #e9e9ee;
+  --dark-grey: #d4d4db;
+  --white: #ffffff;
+  --text-highlight-color: #3f3c3d;
+  --blockquote-color: #666366;
+  --blockquote-bg: rgba(247, 157, 188, .06);
+  --reward-pop: #ffffff;
+  --toc-link-color: #666366;
+  --card-box-shadow: 0 4px 18px rgba(31, 35, 41, .06);
+  --card-hover-box-shadow: 0 8px 24px rgba(247, 157, 188, .14);
+  --pseudo-hover: #f79dbc;
+  --scrollbar-color: #f79dbc;
+  --default-bg-color: #f79dbc;
+  --mark-bg: rgba(0, 0, 0, .35);
+}
+
+[data-theme='dark'] {
+  --global-bg: #1f1f1f;
+  --font-color: rgba(255, 255, 255, .78);
+  --card-bg: #282828;
+  --card-meta: rgba(255, 255, 255, .56);
+  --sidebar-bg: #242424;
+  --sidebar-menu-bg: #2b2b2b;
+  --search-bg: #282828;
+  --search-input-color: #f5f5f5;
+  --search-a-color: #f5f5f5;
+  --text-highlight-color: rgba(255, 255, 255, .92);
+  --light-grey: rgba(255, 255, 255, .42);
+  --dark-grey: rgba(255, 255, 255, .24);
+  --blockquote-color: rgba(255, 255, 255, .7);
+  --blockquote-bg: rgba(247, 157, 188, .08);
+  --toc-link-color: rgba(255, 255, 255, .65);
+  --btn-bg: #e987a9;
+  --btn-hover-color: #f5a9c3;
+  --card-box-shadow: 0 6px 20px rgba(0, 0, 0, .22);
+  --card-hover-box-shadow: 0 8px 26px rgba(0, 0, 0, .3);
+  --mark-bg: rgba(0, 0, 0, .62);
+}
+
+#page-header.not-top-img > #nav,
+#page-header.nav-fixed > #nav {
+  border-bottom: 1px solid rgba(76, 73, 72, .06);
+  background: rgba(255, 255, 255, .87);
+  box-shadow: 0 5px 16px rgba(31, 35, 41, .06);
+}
+
+[data-theme='dark'] #page-header.not-top-img > #nav,
+[data-theme='dark'] #page-header.nav-fixed > #nav {
+  border-bottom-color: rgba(255, 255, 255, .08);
+  background: rgba(40, 40, 40, .92);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .22);
+}
+
+#footer {
+  border-top: 1px solid rgba(76, 73, 72, .08);
+  background: rgba(255, 255, 255, .86);
+  backdrop-filter: blur(8px);
+}
+
+#footer > *,
+#footer a {
+  color: #4c4948;
+}
+
+#footer a:hover {
+  color: #e987a9;
+}
+
+#footer .footer-other {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2px 16px;
+  min-height: 42px;
+  padding: 9px 20px;
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+#footer .footer-copyright,
+#footer .footer_custom_text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0;
+}
+
+#footer .framework-info {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#footer-runtime {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+#footer .footer-separator {
+  margin: 0 3px;
+}
+
+[data-theme='dark'] #footer {
+  border-top-color: rgba(255, 255, 255, .08);
+  background: rgba(40, 40, 40, .92);
+}
+
+[data-theme='dark'] #footer > *,
+[data-theme='dark'] #footer a {
+  color: rgba(255, 255, 255, .78);
+}
+
+@media screen and (max-width: 768px) {
+  #footer .footer-other {
+    gap: 1px 10px;
+    min-height: 38px;
+    padding: 8px 12px;
+    font-size: .78rem;
+  }
+}
+/* Top navigation: grouped menus and icon-only actions */
+#search-button .site-page > span,
+#nav .menus_item > a[href*="travellings.cn"] > span {
+  display: none;
+}
+
+#search-button .site-page i,
+#nav .menus_item > a[href*="travellings.cn"] i {
+  padding: 0;
+  margin: 0;
+}
+
+#nav .menus_item > a[href*="travellings.cn"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  padding-bottom: 0;
+}
+
+#nav .menus_item > a[href*="travellings.cn"] i {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+@media screen and (min-width: 769px) {
+  #nav .menus_items {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    width: max-content;
+    height: 60px;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  #nav .menus_items > .menus_item {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  #nav .menus_items > .menus_item > .site-page {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    padding-bottom: 0;
+  }
+
+  #nav .menus_items > .menus_item:has(> .menus_item_child)::after {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 100%;
+    height: 18px;
+    content: '';
+    transform: translateX(-50%);
+  }
+
+  #nav .menus_items > .menus_item > .menus_item_child {
+    top: 100%;
+    right: auto;
+    left: 50%;
+    z-index: 100;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 4px;
+    width: max-content;
+    margin-top: 2px;
+    padding: 4px 6px;
+    visibility: hidden;
+    opacity: 0;
+    clip-path: inset(0 50% 0 50% round 6px);
+    transform: translate(-50%, 8px);
+    transform-origin: top center;
+    animation: none;
+    transition:
+      opacity .16s ease .04s,
+      transform .18s ease .04s,
+      clip-path .18s ease .04s,
+      visibility 0s linear .04s;
+    pointer-events: none;
+  }
+
+  #nav .menus_items > .menus_item.open > .menus_item_child {
+    visibility: visible;
+    opacity: 1;
+    clip-path: inset(0 0 0 0 round 6px);
+    transform: translate(-50%, 0);
+    transition-delay: 0s;
+    pointer-events: auto;
+  }
+
+  #nav .menus_items > .menus_item > .menus_item_child > li {
+    display: flex;
+    width: auto;
+    white-space: nowrap;
+  }
+
+  #nav .menus_items > .menus_item > .menus_item_child > li > a {
+    display: flex;
+    align-items: center;
+    width: auto;
+    padding: 7px 12px;
+    border-radius: 5px;
+  }
+
+  #nav #search-button {
+    position: absolute;
+    top: 0;
+    right: 36px;
+    display: flex;
+    align-items: center;
+    height: 60px;
+  }
+}

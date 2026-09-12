@@ -1,8 +1,24 @@
 @import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-regular.css");
 @import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkai-bold.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkaimono-regular.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkaimono-bold.css");
 
+body,
+button,
+input,
+select,
+textarea,
 #site-title,
 #recent-posts .recent-post-item .article-title,
 #post-info .post-title {
   font-family: "LXGW WenKai", "霞鹜文楷", "Kaiti SC", KaiTi, STKaiti, cursive;
+}
+
+code,
+pre,
+kbd,
+samp,
+.highlight code,
+.highlight pre {
+  font-family: "LXGW WenKai Mono", "霞鹜文楷等宽", "LXGW WenKai", monospace !important;
 }
