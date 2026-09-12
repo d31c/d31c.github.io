@@ -265,3 +265,13 @@
     height: 60px;
   }
 }
+/* Expand the hover area for moving hr icons without changing the visual line */
+.custom-hr::after {
+  position: absolute;
+  top: -14px;
+  right: 0;
+  bottom: -14px;
+  left: 0;
+  z-index: 0;
+  content: '';
+}
