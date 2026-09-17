@@ -209,8 +209,8 @@
     </author>
     <category term="问题解决" scheme="https://yiwan.fan/categories/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <category term="Cloudflare" scheme="https://yiwan.fan/tags/Cloudflare/"/>
-    <category term="Hexo" scheme="https://yiwan.fan/tags/Hexo/"/>
     <category term="博客" scheme="https://yiwan.fan/tags/%E5%8D%9A%E5%AE%A2/"/>
+    <category term="Hexo" scheme="https://yiwan.fan/tags/Hexo/"/>
     <content>
       <![CDATA[<h1 id="部署过程"><a href="#部署过程" class="headerlink" title="部署过程"></a>部署过程</h1><h2 id="Hexo"><a href="#Hexo" class="headerlink" title="Hexo"></a>Hexo</h2><p>Hexo搜关键词,可参考如下关键词:Hexo,Github Pages,网上有现成的教程,不看部署到github pages部分即可</p><h2 id="Cloudflare-Pages"><a href="#Cloudflare-Pages" class="headerlink" title="Cloudflare Pages"></a>Cloudflare Pages</h2><p><img src="https://s.yiwan.fan/20260828144957030.png" alt="image-20260828144957010"></p><p>……..</p><p>选择下面那个</p><p>参考<a href="https://yiwan.fan/posts/17/">从 Github Pages 更换到 Cloudflare Pages 经历 | 一碗饭 blog</a></p><h2 id="R2图床"><a href="#R2图床" class="headerlink" title="R2图床"></a>R2图床</h2><p>cloudflare中创建存储桶,绑定自己的域名</p><p>一定额度的图床免费,但还需要绑定支付方式,如Paypal或者visa</p><p>我用的是paypal,paypal绑定银联的借记卡</p><p>使用图床需要下载PicGo,安装<a href="https://www.npmjs.com/package/@tianlelyd/picgo-plugin-cloudflare-r2">@tianlelyd&#x2F;picgo-plugin-cloudflare-r2 - npm</a>插件</p><h2 id="冲突问题"><a href="#冲突问题" class="headerlink" title="冲突问题"></a>冲突问题</h2><p>网站部署和图床都在抢同一个自定义域名,解决方式就是让图床绑定其他的域名(我用的二级域名)</p><p><img src="https://s.yiwan.fan/20260828145746072.png" alt="image-20260828145746048"></p><p>这样主站是yiwan.fan上传图片是s.yiwan.fan</p>]]>
     </content>
@@ -228,9 +228,9 @@
       <name>ljw</name>
     </author>
     <category term="备忘" scheme="https://yiwan.fan/categories/%E5%A4%87%E5%BF%98/"/>
+    <category term="Github Pages" scheme="https://yiwan.fan/tags/Github-Pages/"/>
     <category term="Cloudflare" scheme="https://yiwan.fan/tags/Cloudflare/"/>
     <category term="博客" scheme="https://yiwan.fan/tags/%E5%8D%9A%E5%AE%A2/"/>
-    <category term="Github Pages" scheme="https://yiwan.fan/tags/Github-Pages/"/>
     <content>
       <![CDATA[<h1 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h1><p>github pages国内访问速度太慢,本想要迁移到vercel的,但是被他的手机号验证拦住了(+86收不到),于是决定使用Cloudflare Pages</p><h1 id="部署过程"><a href="#部署过程" class="headerlink" title="部署过程"></a>部署过程</h1><p>登录<a href="https://www.cloudflare-cn.com/">个人 | Cloudflare</a>,</p><p>进入</p><p><img src="https://s.yiwan.fan/20260828124324985.png"></p><p>由于我是在本地构建完再上传到github的,所以构建命令留空</p><p>由于.git文件过大,cloudflare不支持,所以在部署命令中添加删除的命令</p><p><img src="https://s.yiwan.fan/20260828124339168.png"></p><p>之后需要绑定域名,否则原域名会被墙</p>]]>
     </content>
