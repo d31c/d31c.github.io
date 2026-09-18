@@ -265,3 +265,52 @@
     height: 60px;
   }
 }
+/* Expand the hover area for moving hr icons without changing the visual line */
+.custom-hr::after {
+  position: absolute;
+  top: -14px;
+  right: 0;
+  bottom: -14px;
+  left: 0;
+  z-index: 0;
+  content: '';
+}
+
+/* Footer badges */
+#footer .footer_custom_text {
+  display: flex;
+  width: 100%;
+}
+
+#footer .footer-badges {
+  display: flex;
+  flex-basis: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+#footer .footer-badges a {
+  display: inline-flex;
+  line-height: 0;
+}
+
+#footer .footer-badges img {
+  display: block;
+  height: 20px;
+  width: auto;
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 768px) {
+  #footer .footer-badges {
+    gap: 4px;
+  }
+
+  #footer .footer-badges img {
+    height: 18px;
+  }
+}
