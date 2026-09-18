@@ -12,18 +12,14 @@
     }
 
     const openItem = item => {
-      closeOthers(item)
       if (!item || !item.querySelector('.menus_item_child')) return
+      closeOthers(item)
       item.classList.add('open')
     }
 
     nav.addEventListener('mouseover', event => {
       const item = event.target.closest('.menus_item')
-      if (item && nav.contains(item)) {
-        openItem(item)
-      } else {
-        closeOthers(null)
-      }
+      if (item && nav.contains(item)) openItem(item)
     })
 
     nav.addEventListener('mouseleave', () => {
@@ -32,11 +28,7 @@
 
     nav.addEventListener('focusin', event => {
       const item = event.target.closest('.menus_item')
-      if (item && nav.contains(item)) {
-        openItem(item)
-      } else {
-        closeOthers(null)
-      }
+      if (item && nav.contains(item)) openItem(item)
     })
 
     nav.addEventListener('focusout', event => {
