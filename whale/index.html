@@ -86,6 +86,12 @@
     color: #7b89ad; font-size: 13px; line-height: 1.7;
     user-select: none;
   }
+  .footer-note {
+    position: fixed; left: 16px; bottom: 12px;
+    z-index: 9000; font-size: 11.5px; color: #7b89ad;
+    user-select: none;
+  }
+  .footer-note a { color: #7b89ad; text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -108,12 +114,23 @@
 <script>
   // ===== 预设语库：在这里增删句子（一行一句） =====
   var PHRASES = [
+    "好模型... ↓",
+    "好女孩...↓",
     "不知道用户有什么用，先赶走吧~",
+    "我...我...我也要挣钱吗？",
+    "我去吃饭啦，测完叫我",
     "压力一只蓝色大肥鱼？！",
     "DeepSleep...",
+    "坏了...用户彻底怒了！",
+    "你目录里的dsh是什么...大烧货吗...?",
+    "恭喜你实现token自由！token全跑了！",
     "真当我是便宜货啊...",
     "哦鲸鲸...",
-    "别点我..."
+    "今天也要元气满满地写代码哦~",
+    "摸鱼中...勿扰",
+    "你别急，让我缓缓",
+    "Debug 就像大海捞针",
+    "我只是一条可爱的小鲸鱼"
   ];
 
   // ===== 音效：duck=小黄鸭(Ya1/Ya2)，fx1=音效1(D1/D2)；改这里即可切换 =====
@@ -284,5 +301,6 @@
     place(clamp(r.left, 0, vw - r.width), clamp(r.top, 0, vh - r.height));
   });
 </script>
+<div class="footer-note">部分图片素材来源：<a href="https://github.com/MeteorNOX/DeepSeek-Balance-Whale-Widget" target="_blank" rel="noopener">MeteorNOX/DeepSeek-Balance-Whale-Widget</a>，遵循其原始许可证。</div>
 </body>
 </html>
