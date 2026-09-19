@@ -3,14 +3,16 @@
 @import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkaimono-regular.css");
 @import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/lxgwwenkaimono-bold.css");
 
-body,
-button,
-input,
-select,
-textarea,
+/* 正文保持系统字体（长文可读性），仅标题类使用霞鹜文楷 */
 #site-title,
+#site-subtitle,
 #recent-posts .recent-post-item .article-title,
-#post-info .post-title {
+#post-info .post-title,
+.card-widget .card-headline,
+#article-container h1,
+#article-container h2,
+#article-container h3,
+#article-container h4 {
   font-family: "LXGW WenKai", "霞鹜文楷", "Kaiti SC", KaiTi, STKaiti, cursive;
 }
 

@@ -314,3 +314,1598 @@
     height: 18px;
   }
 }
+
+
+/* ========================================
+   可爱简洁白粉主题 - 2026-09-19 优化
+   依据 docs/style-optimization-plan.md 实施
+   ======================================== */
+
+/* ---------- 三级粉色阶 ---------- */
+:root {
+  --pink-primary: #f79dbc;
+  --pink-light: #ffd6e7;
+  --pink-lighter: #fff0f6;
+  --pink-dark: #d63384;
+  --pink-shadow: rgba(247, 157, 188, 0.15);
+}
+
+[data-theme='dark'] {
+  --pink-primary: #f2a6c0;
+  --pink-light: #4a2c3a;
+  --pink-lighter: #3d232e;
+  --pink-dark: #ff8fab;
+  --pink-shadow: rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 全局卡片（云朵风） ---------- */
+#recent-posts .recent-post-item,
+.card-widget,
+aside .card,
+#pagination .pagination,
+#post .post-content,
+#aside .card-widget,
+.layout_page .card-widget {
+  border-radius: 16px;
+  border: 1px solid rgba(247, 157, 188, 0.08);
+  box-shadow: 0 4px 20px rgba(247, 157, 188, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#recent-posts .recent-post-item:hover,
+.card-widget:hover,
+aside .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(247, 157, 188, 0.15);
+}
+
+[data-theme='dark'] #recent-posts .recent-post-item,
+[data-theme='dark'] .card-widget,
+[data-theme='dark'] aside .card {
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] #recent-posts .recent-post-item:hover,
+[data-theme='dark'] .card-widget:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- 导航栏 ---------- */
+#page-header.not-top-img > #nav,
+#page-header.nav-fixed > #nav {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(247, 157, 188, 0.1);
+}
+
+[data-theme='dark'] #page-header.not-top-img > #nav,
+[data-theme='dark'] #page-header.nav-fixed > #nav {
+  background: rgba(37, 37, 37, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+#nav .menus_item a:hover,
+#nav #search-button:hover {
+  background: var(--pink-light);
+  border-radius: 8px;
+}
+
+[data-theme='dark'] #nav .menus_item a:hover,
+[data-theme='dark'] #nav #search-button:hover {
+  background: var(--pink-light);
+}
+
+/* ---------- 按钮 pill 化 ---------- */
+.btn,
+#aside .card-info .btn,
+#pagination .page-number,
+.post-meta__tags,
+.article-sort-item__tags a,
+#post .post-content .btn {
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+#aside .card-info .btn,
+.btn,
+#pagination .page-number:not(.current) {
+  background: var(--pink-primary);
+  color: #fff;
+}
+
+#aside .card-info .btn:hover,
+.btn:hover,
+#pagination .page-number:hover {
+  background: var(--pink-dark);
+  transform: scale(1.03);
+}
+
+[data-theme='dark'] #aside .card-info .btn,
+[data-theme='dark'] .btn {
+  background: var(--pink-primary);
+  color: #1a1a1a;
+}
+
+
+/* ---------- 文章标题与排版 ---------- */
+#post-info .post-title,
+#recent-posts .recent-post-item .article-title,
+.card-widget .card-info-data > .card-info-data-item,
+#site-title {
+  font-family: "LXGW WenKai", "霞鹜文楷", "Kaiti SC", KaiTi, STKaiti, sans-serif;
+  font-weight: 600;
+}
+
+/* 文章标题粉色装饰线 */
+#post-info .post-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  margin: 12px auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--pink-primary), var(--pink-light));
+}
+
+/* 引用块 */
+blockquote {
+  border-left: 4px solid var(--pink-primary);
+  background: var(--pink-lighter);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+}
+
+[data-theme='dark'] blockquote {
+  background: var(--pink-lighter);
+  border-left-color: var(--pink-primary);
+}
+
+/* ---------- 行内代码（奶粉色） ---------- */
+code:not([class*="language-"]):not(.hljs) {
+  background: var(--pink-lighter);
+  color: var(--pink-dark);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+}
+
+[data-theme='dark'] code:not([class*="language-"]):not(.hljs) {
+  background: var(--pink-lighter);
+  color: var(--pink-dark);
+}
+
+/* 代码块容器圆角 */
+.highlight,
+pre[class*="language-"] {
+  border-radius: 12px;
+  border: 1px solid rgba(247, 157, 188, 0.1);
+}
+
+[data-theme='dark'] .highlight,
+[data-theme='dark'] pre[class*="language-"] {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- 标签 pill 化 ---------- */
+.post-meta__tags,
+.article-sort-item__tags a,
+.tag-cloud-tags a,
+#aside .card-tags a {
+  border-radius: 999px;
+  padding: 4px 12px;
+  background: var(--pink-lighter);
+  color: var(--pink-dark);
+  transition: all 0.2s ease;
+}
+
+.post-meta__tags:hover,
+.article-sort-item__tags a:hover,
+.tag-cloud-tags a:hover,
+#aside .card-tags a:hover {
+  background: var(--pink-primary);
+  color: #fff;
+}
+
+[data-theme='dark'] .post-meta__tags,
+[data-theme='dark'] .article-sort-item__tags a,
+[data-theme='dark'] .tag-cloud-tags a,
+[data-theme='dark'] #aside .card-tags a {
+  background: var(--pink-lighter);
+  color: var(--pink-dark);
+}
+
+/* ---------- 链接 hover ---------- */
+a {
+  transition: color 0.2s ease;
+}
+
+#article-container a:hover,
+.post-content a:hover {
+  color: var(--pink-dark);
+}
+
+/* ---------- 评论区（Twikoo） ---------- */
+.tk-input,
+.tk-textarea {
+  border-radius: 12px;
+  border: 1px solid var(--pink-light);
+  transition: border-color 0.2s ease;
+}
+
+.tk-input:focus,
+.tk-textarea:focus {
+  border-color: var(--pink-primary);
+}
+
+.tk-comment {
+  border-radius: 12px;
+  transition: background 0.2s ease;
+}
+
+.tk-comment:hover {
+  background: var(--pink-lighter);
+}
+
+.tk-submit-btn {
+  border-radius: 999px;
+  background: var(--pink-primary);
+}
+
+.tk-submit-btn:hover {
+  background: var(--pink-dark);
+}
+
+/* ---------- 页脚微调 ---------- */
+#footer {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+#footer a:hover {
+  color: var(--pink-dark);
+}
+
+#footer .footer-badges img {
+  border-radius: 4px;
+}
+
+/* ---------- 滚动条粉色 ---------- */
+::-webkit-scrollbar-thumb {
+  background: var(--pink-primary);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pink-dark);
+}
+
+/* ---------- 选中文字颜色 ---------- */
+::selection {
+  background: var(--pink-light);
+  color: var(--pink-dark);
+}
+
+/* ---------- 移动端适配 ---------- */
+@media screen and (max-width: 768px) {
+  #recent-posts .recent-post-item,
+  .card-widget {
+    border-radius: 12px;
+  }
+  
+  #aside .card-info .btn,
+  .btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+
+/* ---------- 归档/分类/标签页 ---------- */
+.article-sort-item,
+.category-list-item,
+.tag-cloud-item {
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.article-sort-item:hover {
+  background: var(--pink-lighter);
+  transform: translateX(4px);
+}
+
+.article-sort-item__time,
+.article-sort-item__title {
+  border-radius: 8px;
+}
+
+/* 分页按钮 */
+#pagination .page-number.current,
+#pagination .page-number.current:hover {
+  background: var(--pink-dark);
+  border-radius: 999px;
+}
+
+/* ---------- 搜索框 ---------- */
+.search-dialog,
+.local-search {
+  border-radius: 16px;
+  border: 1px solid rgba(247, 157, 188, 0.1);
+  box-shadow: 0 8px 32px rgba(247, 157, 188, 0.12);
+}
+
+.search-input,
+#local-search-input {
+  border-radius: 999px;
+  border: 1px solid var(--pink-light);
+  padding: 10px 20px;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus,
+#local-search-input:focus {
+  border-color: var(--pink-primary);
+}
+
+.search-result-title {
+  color: var(--pink-dark);
+}
+
+/* ---------- 侧边栏 ---------- */
+#aside .card-widget {
+  overflow: hidden;
+}
+
+#aside .card-info img {
+  border-radius: 12px;
+}
+
+#aside .card-announcement {
+  background: var(--pink-lighter);
+  border-radius: 12px;
+}
+
+[data-theme='dark'] #aside .card-announcement {
+  background: var(--pink-lighter);
+}
+
+/* 侧边栏标题 */
+.card-widget .card-headline {
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif;
+  font-weight: 600;
+  color: var(--pink-dark);
+}
+
+/* ---------- 阅读模式适配 ---------- */
+.read-mode #post .post-content,
+.read-mode #recent-posts .recent-post-item {
+  box-shadow: none;
+  border: none;
+}
+
+/* ---------- 回到顶部按钮 ---------- */
+#rightside .rightside-item,
+#go-up {
+  border-radius: 12px;
+  background: var(--pink-primary);
+  transition: all 0.2s ease;
+}
+
+#rightside .rightside-item:hover,
+#go-up:hover {
+  background: var(--pink-dark);
+  transform: translateY(-2px);
+}
+
+/* ---------- 文章版权/打赏 ---------- */
+.post-copyright,
+.reward-button {
+  border-radius: 12px;
+}
+
+.post-copyright {
+  border-left: 4px solid var(--pink-primary);
+  background: var(--pink-lighter);
+}
+
+.reward-button {
+  background: var(--pink-primary);
+}
+
+.reward-button:hover {
+  background: var(--pink-dark);
+}
+
+/* ---------- 图片圆角 ---------- */
+.post-content img,
+.article-container img,
+#post img {
+  border-radius: 8px;
+}
+
+/* ---------- 表格样式 ---------- */
+.post-content table,
+.article-container table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-content table th,
+.article-container table th {
+  background: var(--pink-light);
+}
+
+.post-content table tr:hover,
+.article-container table tr:hover {
+  background: var(--pink-lighter);
+}
+
+/* ---------- 加载动画 ---------- */
+.loading-bg {
+  background: var(--pink-lighter);
+}
+
+/* ---------- 全局背景微调 ---------- */
+body {
+  background: #fafbfc;
+}
+
+[data-theme='dark'] body {
+  background: #1a1a1a;
+}
+
+/* ---------- 确保白色卡片在浅色背景上突出 ---------- */
+.layout_page > .container,
+#content-inner {
+  background: transparent;
+}
+
+/* ---------- 友链卡片 ---------- */
+.flink-list-item {
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.flink-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(247, 157, 188, 0.15);
+}
+
+/* ---------- 404页面 ---------- */
+.error-content {
+  border-radius: 16px;
+}
+
+/* ---------- 打印样式优化 ---------- */
+@media print {
+  #recent-posts .recent-post-item,
+  .card-widget {
+    box-shadow: none;
+    border: 1px solid #ddd;
+  }
+}
+
+
+/* ========================================
+   修复：页码配色 & 标题装饰线优化
+   ======================================== */
+
+/* ---------- 页码：简洁白底粉字风格 ---------- */
+#pagination .pagination {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+#pagination .page-number,
+#pagination .extend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  margin: 0 4px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--pink-dark);
+  border: 1px solid rgba(247, 157, 188, 0.2);
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+#pagination .page-number:hover,
+#pagination .extend:hover {
+  background: var(--pink-lighter);
+  border-color: var(--pink-primary);
+  transform: none;
+}
+
+#pagination .page-number.current,
+#pagination .page-number.current:hover {
+  background: var(--pink-primary);
+  color: #fff;
+  border-color: var(--pink-primary);
+  font-weight: 600;
+}
+
+[data-theme='dark'] #pagination .page-number,
+[data-theme='dark'] #pagination .extend {
+  background: #252525;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: var(--pink-primary);
+}
+
+[data-theme='dark'] #pagination .page-number:hover,
+[data-theme='dark'] #pagination .extend:hover {
+  background: var(--pink-lighter);
+  color: var(--pink-dark);
+}
+
+[data-theme='dark'] #pagination .page-number.current,
+[data-theme='dark'] #pagination .page-number.current:hover {
+  background: var(--pink-primary);
+  color: #1a1a1a;
+  border-color: var(--pink-primary);
+}
+
+/* ---------- 标题装饰线：更柔和 ---------- */
+#post-info .post-title::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  margin: 16px auto 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--pink-light), var(--pink-primary), var(--pink-light));
+  opacity: 0.6;
+}
+
+/* ---------- 分割线（hr）优化 ---------- */
+hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(247, 157, 188, 0.3), transparent);
+  margin: 32px 0;
+}
+
+hr::before {
+  color: var(--pink-primary);
+  opacity: 0.5;
+}
+
+[data-theme='dark'] hr {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+}
+
+/* ---------- 导航栏下边框更细 ---------- */
+#page-header.not-top-img > #nav,
+#page-header.nav-fixed > #nav {
+  border-bottom: 1px solid rgba(247, 157, 188, 0.06);
+  box-shadow: 0 2px 12px rgba(31, 35, 41, 0.04);
+}
+
+[data-theme='dark'] #page-header.not-top-img > #nav,
+[data-theme='dark'] #page-header.nav-fixed > #nav {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- 卡片边框微调 ---------- */
+#recent-posts .recent-post-item,
+.card-widget,
+aside .card {
+  border: 1px solid rgba(247, 157, 188, 0.05);
+}
+
+[data-theme='dark'] #recent-posts .recent-post-item,
+[data-theme='dark'] .card-widget,
+[data-theme='dark'] aside .card {
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+/* ---------- 标签页/分类页横条 ---------- */
+.category-lists,
+.tag-cloud-container {
+  border-radius: 16px;
+  border: 1px solid rgba(247, 157, 188, 0.08);
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(247, 157, 188, 0.06);
+}
+
+[data-theme='dark'] .category-lists,
+[data-theme='dark'] .tag-cloud-container {
+  background: #252525;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- 归档时间线 ---------- */
+.article-sort {
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(247, 157, 188, 0.08);
+  box-shadow: 0 4px 20px rgba(247, 157, 188, 0.06);
+  padding: 20px;
+}
+
+[data-theme='dark'] .article-sort {
+  background: #252525;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+.article-sort-title::before {
+  background: var(--pink-primary);
+}
+
+.article-sort-item::before {
+  border-color: var(--pink-light);
+}
+
+.article-sort-item:hover::before {
+  border-color: var(--pink-primary);
+}
+
+
+/* ========================================
+   紧急修复：页码当前页高亮
+   ======================================== */
+
+/* 重置页码基础样式 */
+#pagination .page-number,
+#pagination .extend {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px !important;
+  height: 36px !important;
+  margin: 0 4px !important;
+  padding: 0 12px !important;
+  border-radius: 999px !important;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none !important;
+}
+
+/* 非当前页：白底粉字 */
+#pagination .page-number:not(.current),
+#pagination .extend {
+  background: #fff !important;
+  color: var(--pink-dark) !important;
+  border: 1px solid rgba(247, 157, 188, 0.25) !important;
+  box-shadow: 0 2px 8px rgba(247, 157, 188, 0.08);
+}
+
+#pagination .page-number:not(.current):hover,
+#pagination .extend:hover {
+  background: var(--pink-lighter) !important;
+  border-color: var(--pink-primary) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(247, 157, 188, 0.15);
+}
+
+/* 当前页：粉底白字，最明显 */
+#pagination .page-number.current,
+#pagination .page-number.current:hover,
+#pagination span.page-number.current {
+  background: var(--pink-primary) !important;
+  color: #fff !important;
+  border: 1px solid var(--pink-primary) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(247, 157, 188, 0.25);
+  cursor: default;
+  transform: none !important;
+}
+
+/* 深色模式适配 */
+[data-theme='dark'] #pagination .page-number:not(.current),
+[data-theme='dark'] #pagination .extend {
+  background: #2d2d2d !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: var(--pink-primary) !important;
+}
+
+[data-theme='dark'] #pagination .page-number:not(.current):hover,
+[data-theme='dark'] #pagination .extend:hover {
+  background: var(--pink-lighter) !important;
+  color: var(--pink-dark) !important;
+}
+
+[data-theme='dark'] #pagination .page-number.current,
+[data-theme='dark'] #pagination .page-number.current:hover {
+  background: var(--pink-primary) !important;
+  color: #1a1a1a !important;
+  border-color: var(--pink-primary) !important;
+}
+
+/* 分页容器透明化 */
+#pagination .pagination {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+/* 上一页/下一页箭头 */
+#pagination .extend.prev,
+#pagination .extend.next {
+  font-size: 0;
+}
+
+#pagination .extend.prev::before {
+  content: '←';
+  font-size: 14px;
+}
+
+#pagination .extend.next::before {
+  content: '→';
+  font-size: 14px;
+}
+
+
+/* ========================================
+   修复：导航栏 hover 效果 - 去掉突兀背景
+   ======================================== */
+
+/* 移除导航栏 hover 粉色背景 */
+#nav .menus_item a,
+#nav #search-button a,
+#nav .site-page {
+  background: transparent !important;
+  border-radius: 0 !important;
+  transition: color 0.2s ease;
+}
+
+#nav .menus_item a:hover,
+#nav #search-button a:hover,
+#nav .site-page:hover {
+  background: transparent !important;
+  color: var(--pink-primary) !important;
+}
+
+/* 添加精致下划线效果 */
+#nav .menus_item > a {
+  position: relative;
+}
+
+#nav .menus_item > a::after {
+  content: '';
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--pink-primary);
+  border-radius: 1px;
+  transition: width 0.2s ease;
+}
+
+#nav .menus_item > a:hover::after {
+  width: 20px;
+}
+
+/* 深色模式适配 */
+[data-theme='dark'] #nav .menus_item a:hover,
+[data-theme='dark'] #nav #search-button a:hover {
+  color: var(--pink-primary) !important;
+}
+
+/* 下拉菜单项 hover 也优化 */
+#nav .menus_item_child li a {
+  border-radius: 8px !important;
+  transition: all 0.15s ease;
+}
+
+#nav .menus_item_child li a:hover {
+  background: var(--pink-lighter) !important;
+  color: var(--pink-dark) !important;
+}
+
+[data-theme='dark'] #nav .menus_item_child li a:hover {
+  background: var(--pink-light) !important;
+}
+
+
+/* ========================================
+   404 页面美化 - 白粉可爱风格
+   ======================================== */
+
+.type-404 {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #fafbfc 0%, #fff0f6 100%);
+  padding: 20px;
+}
+
+.type-404 .error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  width: 100%;
+  padding: 60px 40px;
+  border-radius: 24px;
+  background: #fff;
+  border: 1px solid rgba(247, 157, 188, 0.1);
+  box-shadow: 0 8px 40px rgba(247, 157, 188, 0.12);
+  text-align: center;
+  height: auto;
+  overflow: visible;
+}
+
+/* 404 大数字 */
+.type-404 .error-content .error_title {
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif;
+  font-size: 8em;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 0 20px;
+  background: linear-gradient(135deg, var(--pink-primary) 0%, #ffb7d5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+/* 装饰性小图案 */
+.type-404 .error-content .error_title::before {
+  content: '🌸';
+  display: block;
+  font-size: 0.35em;
+  margin-bottom: 10px;
+  -webkit-text-fill-color: initial;
+}
+
+/* 副标题 */
+.type-404 .error-content .error_subtitle {
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif;
+  font-size: 1.4em;
+  color: #666;
+  margin: 0 0 30px;
+  -webkit-line-clamp: unset;
+}
+
+/* 返回按钮 */
+.type-404 .error-content .error-info a,
+.type-404 .error-content .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 32px;
+  border-radius: 999px;
+  background: var(--pink-primary);
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(247, 157, 188, 0.3);
+}
+
+.type-404 .error-content .error-info a:hover,
+.type-404 .error-content .btn:hover {
+  background: var(--pink-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 157, 188, 0.35);
+}
+
+/* 图片隐藏（保持简洁，或改为小尺寸装饰） */
+.type-404 .error-content .error-img {
+  display: none;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+  .type-404 .error-content {
+    padding: 40px 24px;
+    margin: 0 20px;
+  }
+  
+  .type-404 .error-content .error_title {
+    font-size: 5em;
+  }
+  
+  .type-404 .error-content .error_subtitle {
+    font-size: 1.1em;
+  }
+}
+
+/* 页脚在404页面隐藏（Butterfly默认行为，保持一致） */
+.type-404 #footer {
+  display: none;
+}
+
+/* 右侧面板在404页面隐藏 */
+.type-404 + #rightside,
+#rightside {
+  display: none;
+}
+
+
+/* ========================================
+   强制亮色模式 - 清除深色残留
+   ======================================== */
+
+/* 强制禁用所有深色模式样式 */
+[data-theme='dark'] {
+  --global-bg: #f8f9fc !important;
+  --font-color: #4c4948 !important;
+  --hr-border: #ececf1 !important;
+  --hr-before-color: #f4bfd2 !important;
+  --search-bg: #ffffff !important;
+  --search-input-color: #4c4948 !important;
+  --search-a-color: #4c4948 !important;
+  --tab-border-color: #ececf1 !important;
+  --tab-button-bg: #f7f8fb !important;
+  --tab-button-color: #747174 !important;
+  --tab-button-hover-bg: #f4f5f8 !important;
+  --tab-button-active-bg: #ffffff !important;
+  --card-bg: #ffffff !important;
+  --card-meta: #828282 !important;
+  --sidebar-bg: #ffffff !important;
+  --sidebar-menu-bg: #ffffff !important;
+  --btn-hover-color: #f5a9c3 !important;
+  --btn-color: #ffffff !important;
+  --btn-bg: #f79dbc !important;
+  --text-bg-hover: rgba(247, 157, 188, .12) !important;
+  --light-grey: #e9e9ee !important;
+  --dark-grey: #d4d4db !important;
+  --white: #ffffff !important;
+  --text-highlight-color: #3f3c3d !important;
+  --blockquote-color: #666366 !important;
+  --blockquote-bg: rgba(247, 157, 188, .06) !important;
+  --reward-pop: #ffffff !important;
+  --toc-link-color: #666366 !important;
+  --card-box-shadow: 0 4px 18px rgba(31, 35, 41, .06) !important;
+  --card-hover-box-shadow: 0 8px 24px rgba(247, 157, 188, .14) !important;
+  --pseudo-hover: #f79dbc !important;
+  --scrollbar-color: #f79dbc !important;
+  --default-bg-color: #f79dbc !important;
+  --mark-bg: rgba(0, 0, 0, .35) !important;
+  
+  /* 粉色变量也强制回亮色 */
+  --pink-primary: #f79dbc !important;
+  --pink-light: #ffd6e7 !important;
+  --pink-lighter: #fff0f6 !important;
+  --pink-dark: #d63384 !important;
+  --pink-shadow: rgba(247, 157, 188, 0.15) !important;
+}
+
+/* 强制 body 亮色背景 */
+body,
+[data-theme='dark'] body {
+  background: #f8f9fc !important;
+  color: #4c4948 !important;
+}
+
+/* 强制卡片亮色 */
+#recent-posts .recent-post-item,
+.card-widget,
+aside .card,
+#post .post-content,
+[data-theme='dark'] #recent-posts .recent-post-item,
+[data-theme='dark'] .card-widget,
+[data-theme='dark'] aside .card {
+  background: #fff !important;
+  border-color: rgba(247, 157, 188, 0.08) !important;
+}
+
+/* 强制导航亮色 */
+#page-header,
+[data-theme='dark'] #page-header {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+
+#nav a,
+[data-theme='dark'] #nav a {
+  color: #4c4948 !important;
+}
+
+#nav a:hover,
+[data-theme='dark'] #nav a:hover {
+  color: var(--pink-primary) !important;
+}
+
+/* 隐藏深色模式切换按钮 */
+#darkmode,
+.darkmode-button,
+[data-theme='dark'] #darkmode {
+  display: none !important;
+}
+
+/* 强制滚动条亮色 */
+::-webkit-scrollbar-thumb,
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: var(--pink-primary) !important;
+}
+
+/* 强制选中颜色 */
+::selection,
+[data-theme='dark'] ::selection {
+  background: var(--pink-light) !important;
+  color: var(--pink-dark) !important;
+}
+
+
+/* ========================================
+   精准隐藏深色模式按钮 + 彻底强制亮色
+   ======================================== */
+
+/* 只隐藏深色模式切换按钮，保留其他右侧按钮 */
+#darkmode,
+button#darkmode,
+#rightside #darkmode {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 确保右侧边栏其他按钮正常显示 */
+#rightside button:not(#darkmode),
+#rightside a,
+#rightside-config,
+#go-up {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* 彻底覆盖任何深色模式样式 - 最高优先级 */
+html[data-theme='dark'],
+html[data-theme='dark'] body,
+[data-theme='dark'] #recent-posts .recent-post-item,
+[data-theme='dark'] .card-widget,
+[data-theme='dark'] aside .card,
+[data-theme='dark'] #post .post-content,
+[data-theme='dark'] .layout_page,
+[data-theme='dark'] #content-inner,
+[data-theme='dark'] #page-header,
+[data-theme='dark'] #nav,
+[data-theme='dark'] #footer {
+  background: #f8f9fc !important;
+  color: #4c4948 !important;
+}
+
+/* 深色模式下的卡片强制白底 */
+[data-theme='dark'] #recent-posts .recent-post-item,
+[data-theme='dark'] .card-widget,
+[data-theme='dark'] aside .card,
+[data-theme='dark'] #post .post-content,
+[data-theme='dark'] .post-content,
+[data-theme='dark'] .flink-list-item,
+[data-theme='dark'] .article-sort,
+[data-theme='dark'] .category-lists,
+[data-theme='dark'] .tag-cloud-container {
+  background: #ffffff !important;
+  border-color: rgba(247, 157, 188, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(247, 157, 188, 0.06) !important;
+}
+
+/* 深色模式下的文字颜色强制 */
+[data-theme='dark'] h1,
+[data-theme='dark'] h2,
+[data-theme='dark'] h3,
+[data-theme='dark'] h4,
+[data-theme='dark'] h5,
+[data-theme='dark'] h6,
+[data-theme='dark'] p,
+[data-theme='dark'] span,
+[data-theme='dark'] a,
+[data-theme='dark'] .post-title,
+[data-theme='dark'] .article-title,
+[data-theme='dark'] .post-content,
+[data-theme='dark'] .recent-post-info {
+  color: #4c4948 !important;
+}
+
+/* 深色模式下的链接hover保持粉色 */
+[data-theme='dark'] a:hover,
+[data-theme='dark'] .post-title:hover,
+[data-theme='dark'] .article-title:hover {
+  color: var(--pink-dark) !important;
+}
+
+/* 深色模式下的导航强制亮色 */
+[data-theme='dark'] #page-header.not-top-img > #nav,
+[data-theme='dark'] #page-header.nav-fixed > #nav,
+[data-theme='dark'] #nav {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+[data-theme='dark'] #nav a,
+[data-theme='dark'] #nav .site-page,
+[data-theme='dark'] #site-title {
+  color: #4c4948 !important;
+}
+
+[data-theme='dark'] #nav a:hover,
+[data-theme='dark'] #nav .site-page:hover {
+  color: var(--pink-primary) !important;
+}
+
+/* 深色模式下的页脚强制亮色 */
+[data-theme='dark'] #footer {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-top-color: rgba(76, 73, 72, 0.08) !important;
+}
+
+[data-theme='dark'] #footer > *,
+[data-theme='dark'] #footer a {
+  color: #4c4948 !important;
+}
+
+/* 深色模式下的代码块强制亮色 */
+[data-theme='dark'] .highlight,
+[data-theme='dark'] pre,
+[data-theme='dark'] code {
+  background: #f7f8fa !important;
+  color: #4c4948 !important;
+}
+
+[data-theme='dark'] code:not([class*="language-"]):not(.hljs) {
+  background: var(--pink-lighter) !important;
+  color: var(--pink-dark) !important;
+}
+
+/* 深色模式下的输入框强制亮色 */
+[data-theme='dark'] input,
+[data-theme='dark'] textarea,
+[data-theme='dark'] .tk-input,
+[data-theme='dark'] .tk-textarea {
+  background: #ffffff !important;
+  color: #4c4948 !important;
+  border-color: var(--pink-light) !important;
+}
+
+/* 深色模式下的按钮强制亮色 */
+[data-theme='dark'] .btn,
+[data-theme='dark'] #aside .card-info .btn,
+[data-theme='dark'] #pagination .page-number,
+[data-theme='dark'] .post-meta__tags,
+[data-theme='dark'] .tk-submit-btn {
+  background: var(--pink-primary) !important;
+  color: #ffffff !important;
+}
+
+[data-theme='dark'] .btn:hover,
+[data-theme='dark'] #aside .card-info .btn:hover,
+[data-theme='dark'] #pagination .page-number:hover {
+  background: var(--pink-dark) !important;
+}
+
+/* 深色模式下的滚动条强制亮色 */
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: var(--pink-primary) !important;
+}
+
+/* 深色模式下的选中颜色强制亮色 */
+[data-theme='dark'] ::selection {
+  background: var(--pink-light) !important;
+  color: var(--pink-dark) !important;
+}
+
+/* 移除深色模式类名 */
+.dark-mode,
+.darkmode {
+  display: none !important;
+}
+
+
+/* ========================================
+   404 页面完全重构 - 独立简洁单页
+   ======================================== */
+
+/* 隐藏404页面的所有常规布局元素 */
+.type-404 #page-header,
+.type-404 #sidebar,
+.type-404 #rightside,
+.type-404 #footer,
+.type-404 #web_bg,
+.type-404 .bg-animation {
+  display: none !important;
+}
+
+/* 404页面容器 - 全屏居中 */
+.type-404 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #fafbfc 0%, #fff5f8 50%, #fff0f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* 404内容卡片 */
+.type-404 .error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 420px;
+  width: 90%;
+  padding: 50px 40px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  border: 1px solid rgba(247, 157, 188, 0.15);
+  box-shadow: 0 20px 60px rgba(247, 157, 188, 0.2);
+  text-align: center;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* 隐藏默认图片 */
+.type-404 .error-img {
+  display: none !important;
+}
+
+/* 404标题 - 超大渐变粉 */
+.type-404 .error_title {
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif;
+  font-size: 7em;
+  font-weight: 700;
+  line-height: 1;
+  margin: 0 0 20px;
+  background: linear-gradient(135deg, #f79dbc 0%, #ffb7d5 50%, #f79dbc 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient 3s ease infinite;
+  text-shadow: none;
+}
+
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 添加樱花装饰 */
+.type-404 .error_title::before {
+  content: '🌸';
+  display: block;
+  font-size: 0.4em;
+  margin-bottom: 15px;
+  -webkit-text-fill-color: initial;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 副标题 */
+.type-404 .error_subtitle {
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif;
+  font-size: 1.3em;
+  color: #888;
+  margin: 0 0 35px;
+  line-height: 1.5;
+}
+
+/* 返回按钮 */
+.type-404 .error-info::after {
+  content: '返回首页';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 36px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f79dbc 0%, #ffb7d5 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(247, 157, 188, 0.4);
+  text-decoration: none;
+}
+
+.type-404 .error-info:hover::after {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(247, 157, 188, 0.5);
+}
+
+/* 点击返回 */
+.type-404 .error-info {
+  cursor: pointer;
+}
+
+/* 装饰圆点背景 */
+.type-404::before {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  background-image: radial-gradient(circle, rgba(247, 157, 188, 0.08) 1px, transparent 1px);
+  background-size: 30px 30px;
+  animation: move-bg 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes move-bg {
+  from { transform: translate(0, 0); }
+  to { transform: translate(30px, 30px); }
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+  .type-404 .error-content {
+    padding: 40px 24px;
+    margin: 0 20px;
+    border-radius: 20px;
+  }
+  
+  .type-404 .error_title {
+    font-size: 4.5em;
+  }
+  
+  .type-404 .error_subtitle {
+    font-size: 1.1em;
+  }
+}
+
+/* 确保body无滚动 */
+body:has(.type-404) {
+  overflow: hidden !important;
+}
+
+
+/* ========================================
+   404 页面彻底修复 - 重置所有布局
+   ======================================== */
+
+/* 1. 强制页面级重置 */
+html:has(.type-404),
+body:has(.type-404) {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+  background: linear-gradient(135deg, #fafbfc 0%, #fff5f8 50%, #fff0f6 100%) !important;
+}
+
+/* 2. 彻底隐藏所有常规布局元素 */
+.type-404 #page-header,
+.type-404 #sidebar,
+.type-404 #rightside,
+.type-404 #footer,
+.type-404 #web_bg,
+.type-404 .bg-animation,
+.type-404 #menu-mask,
+.type-404 #sidebar-menus,
+.type-404 #mobile-sidebar-menus,
+.type-404 .layout_page,
+.type-404 .container,
+.type-404 #body-wrap,
+.type-404 main,
+.type-404 .main {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 3. 让 body-wrap 成为全屏容器 */
+.type-404 {
+  display: block !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  z-index: 9999 !important;
+  overflow: hidden !important;
+}
+
+/* 4. 让 main 内容区真正全屏 */
+.type-404 #body-wrap,
+.type-404 main,
+.type-404 .main,
+.type-404 #content-inner,
+.type-404 .error-content {
+  display: flex !important;
+}
+
+/* 5. 内容卡片全屏居中 */
+.type-404 .error-content {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 90% !important;
+  max-width: 440px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 50px 40px !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(247, 157, 188, 0.15) !important;
+  box-shadow: 0 20px 60px rgba(247, 157, 188, 0.2) !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  animation: float-card 3s ease-in-out infinite !important;
+}
+
+@keyframes float-card {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-50%, calc(-50% - 8px)); }
+}
+
+/* 6. 隐藏图片 */
+.type-404 .error-img {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* 7. 错误信息容器 */
+.type-404 .error-info {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+}
+
+/* 8. 重置 404 标题样式 */
+.type-404 .error_title {
+  display: block !important;
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif !important;
+  font-size: 7em !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  margin: 0 0 20px 0 !important;
+  padding: 0 !important;
+  background: linear-gradient(135deg, #f79dbc 0%, #ffb7d5 50%, #f79dbc 100%) !important;
+  background-size: 200% 200% !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-shadow: none !important;
+  animation: gradient-shift 3s ease infinite !important;
+  width: 100% !important;
+  text-align: center !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* 9. 樱花装饰 */
+.type-404 .error_title::before {
+  content: '🌸' !important;
+  display: block !important;
+  font-size: 0.4em !important;
+  margin: 0 0 15px 0 !important;
+  padding: 0 !important;
+  -webkit-text-fill-color: initial !important;
+  position: relative !important;
+  z-index: 2 !important;
+  animation: sakura-spin 4s linear infinite !important;
+}
+
+@keyframes sakura-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* 10. 副标题 */
+.type-404 .error_subtitle {
+  display: block !important;
+  font-family: "LXGW WenKai", "霞鹜文楷", sans-serif !important;
+  font-size: 1.2em !important;
+  color: #888 !important;
+  margin: 0 0 35px 0 !important;
+  padding: 0 !important;
+  line-height: 1.5 !important;
+  width: 100% !important;
+  text-align: center !important;
+  position: relative !important;
+  z-index: 2 !important;
+  -webkit-line-clamp: unset !important;
+}
+
+/* 11. 返回按钮 */
+.type-404 .error-info::after {
+  content: '返回首页' !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 14px 36px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #f79dbc 0%, #ffb7d5 100%) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 1em !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(247, 157, 188, 0.4) !important;
+  text-decoration: none !important;
+  border: none !important;
+  outline: none !important;
+  position: relative !important;
+  z-index: 2 !important;
+  margin: 0 !important;
+}
+
+/* 12. 移除悬停效果，防止冲突 */
+.type-404 .error-info:hover::after {
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(247, 157, 188, 0.4) !important;
+}
+
+/* 13. 移动端适配 */
+@media screen and (max-width: 768px) {
+  .type-404 .error-content {
+    width: 85% !important;
+    max-width: 360px !important;
+    padding: 40px 24px !important;
+  }
+  
+  .type-404 .error_title {
+    font-size: 4.5em !important;
+  }
+  
+  .type-404 .error_subtitle {
+    font-size: 1em !important;
+  }
+  
+  .type-404 .error-info::after {
+    padding: 12px 28px !important;
+    font-size: 0.9em !important;
+  }
+}
+
+/* 14. 移除任何额外伪元素干扰 */
+.type-404 .error-content::before,
+.type-404 .error-content::after,
+.type-404 .error-img::before,
+.type-404 .error-img::after,
+.type-404 .error-info::before,
+.type-404 .error_title::after,
+.type-404 .error_subtitle::before,
+.type-404 .error_subtitle::after {
+  display: none !important;
+  content: none !important;
+}
