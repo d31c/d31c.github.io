@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>传送门五子棋</title>
+<style>
+  :root {
+    --bg1: #1f2937;
+    --bg2: #111827;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --accent: #7c4dff;
+    --accent2: #3b82f6;
+    --danger: #ef4444;
+    --ok: #16a34a;
+    --board-bg: #e6c890;
+    --board-line: #8a6d3b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    min-height: 100vh;
+    color: var(--text);
+    padding: 16px;
+  }
+  header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 26px;
+    letter-spacing: 2px;
+  }
+  #status {
+    font-size: 15px;
+    opacity: .95;
+    min-height: 22px;
+  }
+  #main {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  #boardWrap {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  }
+  canvas { display: block; border-radius: 8px; cursor: pointer; }
+  #panel {
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.25);
+  }
+  .card h2 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    color: var(--accent);
+    border-bottom: 2px solid #eef0f4;
+    padding-bottom: 6px;
+  }
+  .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+  button {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #eef0f4;
+    color: var(--text);
+    transition: all .15s;
+  }
+  button:hover:not(:disabled) { filter: brightness(.96); }
+  button:disabled { opacity: .45; cursor: not-allowed; }
+  button.primary { background: var(--accent); color: #fff; }
+  button.primary.active { background: var(--ok); }
+  button.blue { background: var(--accent2); color: #fff; }
+  button.blue.active { background: var(--ok); }
+  button.danger { background: var(--danger); color: #fff; }
+  button.ghost { background: transparent; border-color: #d1d5db; }
+  button.sel { background: var(--accent); color: #fff; }
+  #turnInfo { font-size: 14px; margin-bottom: 10px; line-height: 1.6; }
+  .turn-badge {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    vertical-align: -2px;
+    margin: 0 4px 0 2px;
+    border: 1px solid #999;
+  }
+  .turn-badge.black { background: #111; }
+  .turn-badge.white { background: #f5f5f5; }
+  #wizard { font-size: 13.5px; line-height: 1.6; }
+  #wizard .step-title { font-weight: 600; color: var(--accent); margin: 2px 0 6px; }
+  #wizard .opt-group { margin: 6px 0; }
+  #wizard .opt-label { display: inline-block; width: 64px; color: var(--muted); }
+  #letters { font-size: 13.5px; line-height: 1.7; word-break: break-all; }
+  #letters .used { font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+  #log {
+    font-size: 12.5px;
+    line-height: 1.6;
+    max-height: 150px;
+    overflow-y: auto;
+    color: #374151;
+  }
+  #log .err { color: var(--danger); font-weight: 600; }
+  #log .info { color: var(--muted); }
+  #log .win { color: var(--ok); font-weight: 700; }
+  details.card summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+  details.card ul { margin: 8px 0 0; padding-left: 18px; font-size: 12.5px; line-height: 1.7; color: #374151; }
+  #toast {
+    position: fixed;
+    top: 14px; left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: #111827;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    opacity: 0;
+    transition: all .3s;
+    pointer-events: none;
+    z-index: 10;
+    max-width: 80vw;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  .legend { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: -1px; margin-right: 3px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>传送门五子棋</h1>
+  <div id="status">黑方回合</div>
+</header>
+
+<div id="main">
+  <div id="boardWrap">
+    <canvas id="board" width="680" height="680"></canvas>
+  </div>
+
+  <div id="panel">
+    <div class="card">
+      <h2>对局</h2>
+      <div id="turnInfo"></div>
+      <div class="buttons">
+        <button id="btnPiece" class="primary active">落子</button>
+        <button id="btnPortal" class="blue">放置传送门</button>
+        <button id="btnResign" class="danger">认输</button>
+        <button id="btnNew" class="ghost">新游戏</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>传送门操作</h2>
+      <div id="wizard">请点击上方「放置传送门」开始。</div>
+    </div>
+
+    <div class="card">
+      <h2>传送门字母</h2>
+      <div id="letters">尚未使用任何字母。</div>
+    </div>
+
+    <div class="card">
+      <h2>日志</h2>
+      <div id="log"></div>
+    </div>
+
+    <details class="card">
+      <summary>规则摘要 &amp; 图例</summary>
+      <ul>
+        <li>15×15 方格，棋子下在方格中心。黑先白后，无禁手，长连算胜。</li>
+        <li>每回合二选一：落 1 子，或同时放一组（2 个同字母）传送门。</li>
+        <li>传送门按 A、B、C…Z 依次使用，公共设施，双方棋子均可用。</li>
+        <li>传送门沿网格线横/竖放置，覆盖连续 3 条格边；正面朝向有完整 3 格的一侧。</li>
+        <li>正面 3 格为连接格（近字母格/中间格/远字母格）；同字母两门按 近↔近、中↔中、远↔远 相连（双向）。</li>
+        <li>传送门不阻断普通相邻，也不是墙；任意两门不得交叉/重叠/共享格边（可共享端点）。</li>
+        <li>五连 = 若干同色直线段经传送门正面相连，合计 ≥5 子即胜；不可重复用子、每字母组最多用一次。</li>
+        <li>双方同时成五，判当前行动方胜；棋盘下满进入终局（只能放传送门），终局无人五连判和。</li>
+      </ul>
+      <div class="legend">
+        <div><span class="dot" style="background:#7c4dff"></span>传送门（粗线），字母写在字母端</div>
+        <div><span class="dot" style="background:rgba(100,200,255,.6)"></span>正面连接格（高亮），另一侧阴影为背面（隔断）</div>
+        <div><span class="dot" style="background:#e74c3c"></span>近字母格
+            <span class="dot" style="background:#f39c12"></span>中间格
+            <span class="dot" style="background:#27ae60"></span>远字母格（同字母同色一一对应相连）</div>
+      </div>
+    </details>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+
+/* ============================== 常量 ============================== */
+const N = 15;               // 每边方格数
+const CELL = 40;            // 每格像素
+const MARGIN = 40;          // 四周留白（网格线坐标 0..15）
+const CW = MARGIN * 2 + N * CELL;   // 680
+const CH = MARGIN * 2 + N * CELL;
+
+const BLACK = 1, WHITE = 2, DRAW = 3;
+
+const DIRS = [[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
+
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+
+/* ============================== 游戏状态 ============================== */
+let board = [];           // board[r][c] = 0/1/2
+let currentPlayer = BLACK;
+let winner = null;        // null / BLACK / WHITE / DRAW
+let phase = 'normal';     // 'normal' | 'endgame'
+let portals = [];         // [{letter, p1, p2, pairs}]
+let pieceCount = 0;
+let consecutiveSkip = 0;
+let lastMove = null;      // [r,c]
+let winCells = null;      // 获胜路径的 5 格（用于高亮）
+
+let mode = 'piece';       // 'piece' | 'portal'
+let wizard = null;        // {phase:'pick1'|'config1'|'pick2'|'config2', p1, p2}
+let hoverPortal = null;
+let hoverCell = null;
+
+/* ============================== 工具 ============================== */
+function other(p) { return p === BLACK ? WHITE : BLACK; }
+function playerName(p) { return p === BLACK ? '黑方' : (p === WHITE ? '白方' : '—'); }
+function cellIdx(r, c) { return r * N + c; }
+function inBoard(r, c) { return r >= 0 && r < N && c >= 0 && c < N; }
+function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+function gridToPx(g) { return MARGIN + g * CELL; }
+function cellCenter(r, c) { return [MARGIN + (c + 0.5) * CELL, MARGIN + (r + 0.5) * CELL]; }
+
+function logMsg(msg, cls) {
+  const el = document.getElementById('log');
+  const div = document.createElement('div');
+  if (cls) div.className = cls;
+  div.textContent = msg;
+  el.prepend(div);
+  while (el.children.length > 40) el.removeChild(el.lastChild);
+}
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ============================== 传送门几何 ============================== */
+/*
+  单个传送门:
+  { orient:'H'|'V', line:0..15, start:0..12, front, letterEnd }
+  H: line=所在水平网格线 y, start=起始列, 覆盖列 start..start+3 的三条格边
+  V: line=所在垂直网格线 x, start=起始行, 覆盖行 start..start+3 的三条格边
+  front: H -> 'up'|'down';  V -> 'left'|'right'
+  letterEnd: H -> 'left'|'right';  V -> 'top'|'bottom'
+*/
+function portalEdges(p) {
+  if (p.orient === 'H') return [`H:${p.line}:${p.start}`, `H:${p.line}:${p.start+1}`, `H:${p.line}:${p.start+2}`];
+  return [`V:${p.line}:${p.start}`, `V:${p.line}:${p.start+1}`, `V:${p.line}:${p.start+2}`];
+}
+function portalPoints(p) {
+  if (p.orient === 'H') return [p.line*16+p.start, p.line*16+p.start+1, p.line*16+p.start+2, p.line*16+p.start+3];
+  return [p.start*16+p.line, (p.start+1)*16+p.line, (p.start+2)*16+p.line, (p.start+3)*16+p.line];
+}
+function portalEnds(p) {
+  const pts = portalPoints(p);
+  return [pts[0], pts[3]];
+}
+function compatibleGeo(a, b) {
+  // 共享格边 -> 不合法
+  const ea = portalEdges(a), eb = portalEdges(b);
+  const s = new Set(ea);
+  for (const e of eb) if (s.has(e)) return false;
+  // 共享格点必须是双方端点（否则视为交叉/T 形）
+  const pa = portalPoints(a), pb = portalPoints(b);
+  const enda = new Set(portalEnds(a)), endb = new Set(portalEnds(b));
+  for (const p of pa) {
+    if (pb.includes(p)) {
+      if (!(enda.has(p) && endb.has(p))) return false;
+    }
+  }
+  return true;
+}
+function validFront(p) {
+  if (p.orient === 'H') return p.front === 'up' ? p.line >= 1 : p.line <= 14;
+  return p.front === 'left' ? p.line >= 1 : p.line <= 14;
+}
+// 返回 {front:[near,mid,far], back:[...], near, mid, far}，坐标为 [r,c]
+function portalCells(p) {
+  const s = p.start, l = p.line;
+  let cols, rows, front, back;
+  if (p.orient === 'H') {
+    cols = [s, s+1, s+2];
+    if (p.front === 'up') { front = cols.map(c => [l-1, c]); back = cols.map(c => [l, c]); }
+    else { front = cols.map(c => [l, c]); back = cols.map(c => [l-1, c]); }
+  } else {
+    rows = [s, s+1, s+2];
+    if (p.front === 'left') { front = rows.map(r => [r, l-1]); back = rows.map(r => [r, l]); }
+    else { front = rows.map(r => [r, l]); back = rows.map(r => [r, l-1]); }
+  }
+  let near, mid, far;
+  if (p.orient === 'H') {
+    if (p.letterEnd === 'left') { near = front[0]; mid = front[1]; far = front[2]; }
+    else { near = front[2]; mid = front[1]; far = front[0]; }
+  } else {
+    if (p.letterEnd === 'top') { near = front[0]; mid = front[1]; far = front[2]; }
+    else { near = front[2]; mid = front[1]; far = front[0]; }
+  }
+  return { front, back, near, mid, far };
+}
+// 由画布坐标推断一个传送门（含默认正面/字母端），不在网格线附近返回 null
+function portalFromPos(px, py) {
+  if (px < MARGIN - 2 || px > MARGIN + N * CELL + 2 || py < MARGIN - 2 || py > MARGIN + N * CELL + 2) return null;
+  const gx = (px - MARGIN) / CELL;
+  const gy = (py - MARGIN) / CELL;
+  const rx = Math.round(gx), ry = Math.round(gy);
+  const dx = Math.abs(px - gridToPx(rx));
+  const dy = Math.abs(py - gridToPx(ry));
+  const thr = CELL * 0.45;
+  if (dx > thr && dy > thr) return null;
+  if (dx <= dy) {
+    if (rx < 0 || rx > 15) return null;
+    const start = clamp(Math.round(gy) - 1, 0, 12);
+    const front = (rx <= 14) ? 'right' : 'left';
+    return { orient: 'V', line: rx, start, front, letterEnd: 'top' };
+  } else {
+    if (ry < 0 || ry > 15) return null;
+    const start = clamp(Math.round(gx) - 1, 0, 12);
+    const front = (ry <= 14) ? 'down' : 'up';
+    return { orient: 'H', line: ry, start, front, letterEnd: 'left' };
+  }
+}
+
+/* ============================== 合法性：是否存在可放的传送门组 ============================== */
+function hasLegalPortalPair() {
+  if (portals.length >= 26) return false;
+  const valid = [];
+  // 枚举所有合法几何（正面与字母端不影响几何兼容性，且每条线必有至少一个合法正面）
+  for (let y = 0; y <= 15; y++) for (let s = 0; s <= 12; s++) {
+    const g = { orient: 'H', line: y, start: s };
+    let ok = true;
+    for (const q of portals) for (const qp of [q.p1, q.p2]) if (!compatibleGeo(g, qp)) { ok = false; break; }
+    if (ok) valid.push(g);
+  }
+  for (let x = 0; x <= 15; x++) for (let s = 0; s <= 12; s++) {
+    const g = { orient: 'V', line: x, start: s };
+    let ok = true;
+    for (const q of portals) for (const qp of [q.p1, q.p2]) if (!compatibleGeo(g, qp)) { ok = false; break; }
+    if (ok) valid.push(g);
+  }
+  for (let i = 0; i < valid.length; i++)
+    for (let j = i + 1; j < valid.length; j++)
+      if (compatibleGeo(valid[i], valid[j])) return true;
+  return false;
+}
+
+/* ============================== 五连判定（带传送门） ============================== */
+function findFive(color) {
+  const pieces = [];
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++)
+    if (board[r][c] === color) pieces.push(r * N + c);
+  if (pieces.length < 5) return null;
+
+  const memo = new Map();
+  let found = null;     // 找到的路径（cell 序列）
+  const stack = [];
+
+  function dfs(cell, dir, visited, usedL, len) {
+    if (len >= 5) {
+      if (found === null) found = stack.slice();
+      return true;
+    }
+    const key = cell + '|' + (dir === null ? 'n' : dir) + '|' + visited.toString(36) + '|' + usedL;
+    if (memo.has(key)) return memo.get(key);
+
+    let res = false;
+    const r = Math.floor(cell / N), c = cell % N;
+
+    // 普通相邻（同一直线方向延续）
+    if (dir === null) {
+      for (let d = 0; d < 8 && !res; d++) {
+        const nr = r + DIRS[d][0], nc = c + DIRS[d][1];
+        if (!inBoard(nr, nc) || board[nr][nc] !== color) continue;
+        const n = nr * N + nc, bit = 1n << BigInt(n);
+        if (visited & bit) continue;
+        stack.push(n);
+        if (dfs(n, d, visited | bit, usedL, len + 1)) res = true;
+        stack.pop();
+      }
+    } else {
+      const nr = r + DIRS[dir][0], nc = c + DIRS[dir][1];
+      if (inBoard(nr, nc) && board[nr][nc] === color) {
+        const n = nr * N + nc, bit = 1n << BigInt(n);
+        if (!(visited & bit)) {
+          stack.push(n);
+          if (dfs(n, dir, visited | bit, usedL, len + 1)) res = true;
+          stack.pop();
+        }
+      }
+    }
+
+    // 传送连接（同字母正面连接格一一对应，方向重置）
+    if (!res) {
+      for (let li = 0; li < portals.length && !res; li++) {
+        if (usedL & (1 << li)) continue;
+        const pairs = portals[li].pairs;
+        for (let t = 0; t < 3 && !res; t++) {
+          const a = pairs[t][0], b = pairs[t][1];
+          let dest = -1;
+          if (cell === a && b !== cell) dest = b;
+          else if (cell === b && a !== cell) dest = a;
+          if (dest === -1) continue;
+          const dr = Math.floor(dest / N), dc = dest % N;
+          if (board[dr][dc] !== color) continue;
+          const bit = 1n << BigInt(dest);
+          if (visited & bit) continue;
+          stack.push(dest);
+          if (dfs(dest, null, visited | bit, usedL | (1 << li), len + 1)) res = true;
+          stack.pop();
+        }
+      }
+    }
+
+    memo.set(key, res);
+    return res;
+  }
+
+  for (const p of pieces) {
+    stack.push(p);
+    if (dfs(p, null, 1n << BigInt(p), 0, 1)) {
+      if (found === null) found = stack.slice();
+      return found;
+    }
+    stack.pop();
+  }
+  return null;
+}
+
+function checkWin() {
+  const mover = currentPlayer;
+  const bWin = findFive(BLACK);
+  const wWin = findFive(WHITE);
+  if (bWin && wWin) { winCells = mover === BLACK ? bWin : wWin; return mover; }
+  if (bWin) { winCells = bWin; return BLACK; }
+  if (wWin) { winCells = wWin; return WHITE; }
+  return null;
+}
+
+/* ============================== 行动 ============================== */
+function placePiece(r, c) {
+  if (winner !== null || phase !== 'normal') return;
+  board[r][c] = currentPlayer;
+  lastMove = [r, c];
+  pieceCount++;
+  consecutiveSkip = 0;
+  const mover = currentPlayer;
+  const w = checkWin();
+  if (w !== null) { winner = w; logMsg(`${playerName(w)} 五连获胜！`, 'win'); updateAll(); return; }
+  if (pieceCount >= N * N) {
+    phase = 'endgame';
+    logMsg('棋盘已下满，进入终局阶段（只能放置传送门）。', 'info');
+    endgameTurn();
+  } else {
+    currentPlayer = other(currentPlayer);
+  }
+  updateAll();
+}
+
+function placePortalPair(p1, p2) {
+  if (winner !== null) return false;
+  if (portals.length >= 26) { toast('26 组传送门已用完'); return false; }
+  if (!validFront(p1) || !validFront(p2)) { toast('传送门正面不合法（必须朝向棋盘内完整 3 格）'); return false; }
+  if (!compatibleGeo(p1, p2)) { toast('两个传送门冲突：不得交叉、重叠或共享格边'); return false; }
+  for (const q of portals) for (const qp of [q.p1, q.p2]) {
+    if (!compatibleGeo(p1, qp) || !compatibleGeo(p2, qp)) { toast('与已有传送门冲突（交叉/重叠/共享格边）'); return false; }
+  }
+  const letter = String.fromCharCode(65 + portals.length);
+  const c1 = portalCells(p1), c2 = portalCells(p2);
+  const idx = ([r, c]) => r * N + c;
+  const pairs = [
+    [idx(c1.near), idx(c2.near)],
+    [idx(c1.mid), idx(c2.mid)],
+    [idx(c1.far), idx(c2.far)],
+  ];
+  portals.push({ letter, p1, p2, pairs });
+  lastMove = null;
+  consecutiveSkip = 0;
+  logMsg(`${playerName(currentPlayer)} 放置了传送门 ${letter}。`);
+
+  const mover = currentPlayer;
+  const w = checkWin();
+  if (w !== null) { winner = w; logMsg(`${playerName(w)} 五连获胜！`, 'win'); }
+  else if (phase === 'endgame') endgameTurn();
+  else currentPlayer = other(currentPlayer);
+
+  mode = 'piece';
+  wizard = null;
+  hoverPortal = null;
+  updateAll();
+  return true;
+}
+
+function endgameTurn() {
+  while (true) {
+    if (winner !== null) { updateAll(); return; }
+    const can = portals.length < 26 && hasLegalPortalPair();
+    if (can) { updateAll(); return; }   // 等待当前玩家放置传送门或认输
+    logMsg(`${playerName(currentPlayer)} 无法放置合法传送门，跳过。`, 'info');
+    consecutiveSkip++;
+    if (consecutiveSkip >= 2) { winner = DRAW; logMsg('双方均无法行动，和棋。', 'win'); endGame(); return; }
+    currentPlayer = other(currentPlayer);
+  }
+}
+
+function resign() {
+  if (winner !== null) return;
+  if (!confirm(`确定 ${playerName(currentPlayer)} 认输吗？`)) return;
+  winner = other(currentPlayer);
+  logMsg(`${playerName(currentPlayer)} 认输，${playerName(winner)} 获胜。`, 'win');
+  endGame();
+}
+
+function endGame() { updateAll(); }
+
+function resetGame() {
+  if (pieceCount > 0 && !confirm('确定重新开始一局吗？')) return;
+  board = Array.from({ length: N }, () => new Array(N).fill(0));
+  currentPlayer = BLACK;
+  winner = null;
+  phase = 'normal';
+  portals = [];
+  pieceCount = 0;
+  consecutiveSkip = 0;
+  lastMove = null;
+  winCells = null;
+  mode = 'piece';
+  wizard = null;
+  hoverPortal = null;
+  hoverCell = null;
+  document.getElementById('log').innerHTML = '';
+  logMsg('新的一局开始，黑方先手。', 'info');
+  updateAll();
+}
+
+/* ============================== 渲染 ============================== */
+function draw() {
+  ctx.clearRect(0, 0, CW, CH);
+  ctx.fillStyle = '#e6c890';
+  ctx.fillRect(0, 0, CW, CH);
+  ctx.fillStyle = '#f2ddb0';
+  ctx.fillRect(MARGIN, MARGIN, N * CELL, N * CELL);
+
+  // 网格线
+  ctx.strokeStyle = '#8a6d3b';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= N; i++) {
+    line(gridToPx(i), MARGIN, gridToPx(i), MARGIN + N * CELL);
+    line(MARGIN, gridToPx(i), MARGIN + N * CELL, gridToPx(i));
+  }
+  ctx.lineWidth = 2;
+  ctx.strokeRect(MARGIN, MARGIN, N * CELL, N * CELL);
+
+  // 传送门背面阴影（先画，位于棋子下方）
+  for (const g of portals) for (const p of [g.p1, g.p2]) drawPortalShading(p, 'back');
+  // 传送门正面高亮
+  for (const g of portals) for (const p of [g.p1, g.p2]) drawPortalShading(p, 'front');
+
+  // 棋子
+  for (let r = 0; r < N; r++) for (let c = 0; c < N; c++) {
+    if (board[r][c]) drawPiece(r, c, board[r][c]);
+  }
+
+  // 获胜高亮
+  if (winCells) {
+    ctx.strokeStyle = '#ff3b30';
+    ctx.lineWidth = 3;
+    for (const idx of winCells) {
+      const r = Math.floor(idx / N), c = idx % N;
+      const [x, y] = cellCenter(r, c);
+      ctx.beginPath();
+      ctx.arc(x, y, CELL * 0.4, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+  // 最近落子标记
+  if (lastMove) {
+    const [x, y] = cellCenter(lastMove[0], lastMove[1]);
+    ctx.fillStyle = '#ff3b30';
+    ctx.beginPath();
+    ctx.arc(x, y, 5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // 传送门线 + 字母 + 近/中/远标记
+  for (const g of portals) for (const p of [g.p1, g.p2]) drawPortalLine(p, g.letter, false);
+
+  // 悬停预览
+  if (hoverCell && mode === 'piece' && winner === null) {
+    const [x, y] = cellCenter(hoverCell[0], hoverCell[1]);
+    if (board[hoverCell[0]][hoverCell[1]] === 0) {
+      ctx.fillStyle = 'rgba(0,0,0,0.12)';
+      ctx.beginPath();
+      ctx.arc(x, y, CELL * 0.4, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  if (hoverPortal && mode === 'portal' && (wizard && (wizard.phase === 'pick1' || wizard.phase === 'pick2'))) {
+    drawPortalShading(hoverPortal, 'front');
+    drawPortalLine(hoverPortal, null, true);
+  }
+  // 已选中的向导传送门预览
+  if (wizard && mode === 'portal') {
+    if (wizard.p1) { drawPortalShading(wizard.p1, 'front'); drawPortalLine(wizard.p1, null, true); }
+    if (wizard.p2) { drawPortalShading(wizard.p2, 'front'); drawPortalLine(wizard.p2, null, true); }
+  }
+
+  // 胜负覆盖层
+  if (winner !== null) {
+    ctx.fillStyle = 'rgba(0,0,0,0.55)';
+    ctx.fillRect(MARGIN, MARGIN, N * CELL, N * CELL);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 42px "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    const txt = winner === BLACK ? '黑方胜' : (winner === WHITE ? '白方胜' : '和棋');
+    ctx.fillText(txt, MARGIN + N * CELL / 2, MARGIN + N * CELL / 2);
+  }
+}
+function line(x1, y1, x2, y2) {
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+}
+function drawPiece(r, c, color) {
+  const [x, y] = cellCenter(r, c);
+  const rad = CELL * 0.42;
+  ctx.save();
+  ctx.shadowColor = 'rgba(0,0,0,0.35)';
+  ctx.shadowBlur = 3;
+  ctx.shadowOffsetY = 1;
+  const g = ctx.createRadialGradient(x - rad * 0.3, y - rad * 0.3, rad * 0.1, x, y, rad);
+  if (color === BLACK) { g.addColorStop(0, '#555'); g.addColorStop(1, '#000'); }
+  else { g.addColorStop(0, '#ffffff'); g.addColorStop(1, '#c9c9c9'); }
+  ctx.fillStyle = g;
+  ctx.beginPath();
+  ctx.arc(x, y, rad, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  ctx.strokeStyle = color === BLACK ? '#000' : '#8a8a8a';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(x, y, rad, 0, Math.PI * 2);
+  ctx.stroke();
+}
+function drawPortalShading(p, side) {
+  const cells = portalCells(p);
+  const list = side === 'front' ? cells.front : cells.back;
+  for (const [r, c] of list) {
+    if (!inBoard(r, c)) continue;
+    const x = MARGIN + c * CELL, y = MARGIN + r * CELL;
+    if (side === 'front') {
+      ctx.fillStyle = 'rgba(100,200,255,0.28)';
+      ctx.fillRect(x, y, CELL, CELL);
+    } else {
+      ctx.fillStyle = 'rgba(120,120,120,0.30)';
+      ctx.fillRect(x, y, CELL, CELL);
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(x, y, CELL, CELL);
+      ctx.clip();
+      ctx.strokeStyle = 'rgba(60,60,60,0.45)';
+      ctx.lineWidth = 1;
+      for (let d = -CELL; d < CELL * 2; d += 5) {
+        ctx.beginPath(); ctx.moveTo(x + d, y + CELL); ctx.lineTo(x + d + CELL, y); ctx.stroke();
+      }
+      ctx.restore();
+    }
+  }
+}
+function drawPortalLine(p, letter, isPreview) {
+  const s = p.start, l = p.line;
+  let x1, y1, x2, y2;
+  if (p.orient === 'H') { x1 = gridToPx(s); y1 = gridToPx(l); x2 = gridToPx(s + 3); y2 = gridToPx(l); }
+  else { x1 = gridToPx(l); y1 = gridToPx(s); x2 = gridToPx(l); y2 = gridToPx(s + 3); }
+
+  ctx.strokeStyle = isPreview ? 'rgba(124,77,255,0.6)' : '#7c4dff';
+  ctx.lineWidth = isPreview ? 4 : 5;
+  if (isPreview) ctx.setLineDash([6, 4]); else ctx.setLineDash([]);
+  ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // 近/中/远标记：三格边中点前侧小圆点（同字母同色一一对应）
+  const colorOf = t => t === 0 ? '#e74c3c' : (t === 1 ? '#f39c12' : '#27ae60');
+  const types = [0, 1, 2];  // 边索引 k=0,1,2 对应的近/中/远，取决于字母端
+  const order = (p.orient === 'H')
+    ? (p.letterEnd === 'left' ? [0, 1, 2] : [2, 1, 0])
+    : (p.letterEnd === 'top' ? [0, 1, 2] : [2, 1, 0]);
+  for (let k = 0; k < 3; k++) {
+    const t = order[k];
+    const mx = (x1 + (k + 0.5) * ((x2 - x1) / 3));
+    const my = (y1 + (k + 0.5) * ((y2 - y1) / 3));
+    let offx = 0, offy = 0;
+    if (p.orient === 'H') offy = p.front === 'down' ? 7 : -7;
+    else offx = p.front === 'right' ? 7 : -7;
+    ctx.fillStyle = colorOf(t);
+    ctx.beginPath();
+    ctx.arc(mx + offx, my + offy, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // 字母（字母端）
+  if (letter) {
+    let lx, ly;
+    if (p.orient === 'H') {
+      lx = gridToPx(p.letterEnd === 'left' ? s : s + 3);
+      ly = gridToPx(l);
+    } else {
+      lx = gridToPx(l);
+      ly = gridToPx(p.letterEnd === 'top' ? s : s + 3);
+    }
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#7c4dff';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(lx, ly, 11, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#7c4dff';
+    ctx.font = 'bold 13px "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(letter, lx, ly + 0.5);
+  }
+}
+
+/* ============================== 面板 ============================== */
+function updateAll() {
+  draw();
+  updatePanel();
+  renderWizard();
+}
+
+function updatePanel() {
+  const status = document.getElementById('status');
+  const turnInfo = document.getElementById('turnInfo');
+  if (winner !== null) {
+    status.textContent = winner === DRAW ? '和棋' : `${playerName(winner)}获胜`;
+    turnInfo.innerHTML = winner === DRAW ? '终局：和棋' : `<b>${playerName(winner)}</b> 获胜！`;
+  } else {
+    const badge = `<span class="turn-badge ${currentPlayer === BLACK ? 'black' : 'white'}"></span>`;
+    status.textContent = `${playerName(currentPlayer)}回合${phase === 'endgame' ? '（终局阶段）' : ''}`;
+    turnInfo.innerHTML = `${badge}<b>${playerName(currentPlayer)}</b> 的回合${phase === 'endgame' ? ' · 只能放置传送门' : ''}`;
+  }
+
+  const bp = document.getElementById('btnPiece');
+  const bPortal = document.getElementById('btnPortal');
+  const bResign = document.getElementById('btnResign');
+  const gameOn = winner === null;
+  bp.disabled = !(gameOn && phase === 'normal');
+  bPortal.disabled = !(gameOn && portals.length < 26);
+  bResign.disabled = !gameOn;
+
+  bp.className = 'primary' + (mode === 'piece' && gameOn ? ' active' : '');
+  bPortal.className = 'blue' + (mode === 'portal' && gameOn ? ' active' : '');
+
+  const lettersEl = document.getElementById('letters');
+  if (portals.length === 0) {
+    lettersEl.innerHTML = '尚未使用任何字母。';
+  } else {
+    const used = portals.map(g => g.letter).join(' ');
+    const next = portals.length < 26 ? String.fromCharCode(65 + portals.length) : '（已用完）';
+    lettersEl.innerHTML = `已用：<span class="used">${used}</span><br>下一个字母：<b>${next}</b>`;
+  }
+}
+
+function renderWizard() {
+  const el = document.getElementById('wizard');
+  if (mode !== 'portal' || !wizard) {
+    el.innerHTML = winner !== null
+      ? '<span style="color:#999">对局已结束。</span>'
+      : '请点击上方「放置传送门」，再在棋盘上点击网格线选取位置。';
+    return;
+  }
+  const letter = String.fromCharCode(65 + portals.length);
+  let html = '';
+  if (wizard.phase === 'pick1' || wizard.phase === 'pick2') {
+    const which = wizard.phase === 'pick1' ? '第 1 个' : '第 2 个';
+    html += `<div class="step-title">放置 ${letter} · ${which}传送门</div>`;
+    html += `<div>请点击棋盘上的一条<u>网格线</u>（横线＝水平门，竖线＝垂直门），覆盖连续 3 条格边。</div>`;
+    html += `<div style="margin-top:6px;color:#999">移动鼠标可预览位置。</div>`;
+    html += `<div class="buttons" style="margin-top:8px"><button class="ghost" onclick="cancelWizard()">取消</button></div>`;
+  } else {
+    const isFirst = wizard.phase === 'config1';
+    const p = isFirst ? wizard.p1 : wizard.p2;
+    const which = isFirst ? '第 1 个' : '第 2 个';
+    html += `<div class="step-title">配置 ${letter} · ${which}传送门</div>`;
+    html += `<div>方向：${p.orient === 'H' ? '水平' : '垂直'}（覆盖 3 条格边）</div>`;
+
+    // 正面
+    const frontOpts = p.orient === 'H'
+      ? [['up', '朝上', p.line >= 1], ['down', '朝下', p.line <= 14]]
+      : [['left', '朝左', p.line >= 1], ['right', '朝右', p.line <= 14]];
+    html += `<div class="opt-group"><span class="opt-label">正面：</span>`;
+    for (const [val, label, ok] of frontOpts) {
+      const sel = p.front === val ? ' sel' : '';
+      html += `<button class="ghost${sel}" ${ok ? '' : 'disabled'} onclick="setFront(${isFirst ? 1 : 2},'${val}')">${label}${ok ? '' : '（无格）'}</button> `;
+    }
+    html += `</div>`;
+
+    // 字母端
+    const endOpts = p.orient === 'H'
+      ? [['left', '左端'], ['right', '右端']]
+      : [['top', '上端'], ['bottom', '下端']];
+    html += `<div class="opt-group"><span class="opt-label">字母端：</span>`;
+    for (const [val, label] of endOpts) {
+      const sel = p.letterEnd === val ? ' sel' : '';
+      html += `<button class="ghost${sel}" onclick="setLetterEnd(${isFirst ? 1 : 2},'${val}')">${label}</button> `;
+    }
+    html += `</div>`;
+
+    html += `<div class="buttons" style="margin-top:8px">`;
+    if (isFirst) {
+      html += `<button class="primary" onclick="confirmPortal1()">确认第 1 个，放第 2 个</button>`;
+      html += `<button class="ghost" onclick="repick(1)">重选位置</button>`;
+    } else {
+      html += `<button class="primary" onclick="confirmPortal2()">确认放置 ${letter}</button>`;
+      html += `<button class="ghost" onclick="repick(2)">重选位置</button>`;
+    }
+    html += `<button class="ghost" onclick="cancelWizard()">取消</button>`;
+    html += `</div>`;
+  }
+  el.innerHTML = html;
+}
+
+/* ============================== 向导控制（供内联 onclick 调用） ============================== */
+function setFront(which, val) {
+  const p = which === 1 ? wizard.p1 : wizard.p2;
+  p.front = val;
+  updateAll();
+}
+function setLetterEnd(which, val) {
+  const p = which === 1 ? wizard.p1 : wizard.p2;
+  p.letterEnd = val;
+  updateAll();
+}
+function confirmPortal1() {
+  wizard.phase = 'pick2';
+  hoverPortal = null;
+  updateAll();
+}
+function confirmPortal2() {
+  placePortalPair(wizard.p1, wizard.p2);
+}
+function repick(which) {
+  if (which === 1) { wizard.p1 = null; wizard.phase = 'pick1'; }
+  else { wizard.p2 = null; wizard.phase = 'pick2'; }
+  updateAll();
+}
+function cancelWizard() {
+  mode = 'piece';
+  wizard = null;
+  hoverPortal = null;
+  updateAll();
+}
+
+/* ============================== 交互 ============================== */
+function toBoardXY(e) {
+  const rect = canvas.getBoundingClientRect();
+  const sx = canvas.width / rect.width;
+  const sy = canvas.height / rect.height;
+  return [(e.clientX - rect.left) * sx, (e.clientY - rect.top) * sy];
+}
+
+canvas.addEventListener('click', e => {
+  if (winner !== null) return;
+  const [px, py] = toBoardXY(e);
+  if (mode === 'piece') {
+    if (phase === 'endgame') { toast('终局阶段只能放置传送门'); return; }
+    const c = Math.floor((px - MARGIN) / CELL);
+    const r = Math.floor((py - MARGIN) / CELL);
+    if (!inBoard(r, c)) return;
+    if (board[r][c] !== 0) { toast('该格已有棋子'); return; }
+    placePiece(r, c);
+  } else if (mode === 'portal' && wizard) {
+    if (wizard.phase === 'pick1' || wizard.phase === 'pick2') {
+      const p = portalFromPos(px, py);
+      if (!p) { toast('请点击棋盘上的网格线（横线或竖线）'); return; }
+      if (wizard.phase === 'pick1') { wizard.p1 = p; wizard.phase = 'config1'; }
+      else { wizard.p2 = p; wizard.phase = 'config2'; }
+      hoverPortal = null;
+      updateAll();
+    }
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  const [px, py] = toBoardXY(e);
+  hoverCell = null;
+  hoverPortal = null;
+  if (winner !== null) { draw(); return; }
+  if (mode === 'piece') {
+    const c = Math.floor((px - MARGIN) / CELL);
+    const r = Math.floor((py - MARGIN) / CELL);
+    if (inBoard(r, c)) hoverCell = [r, c];
+  } else if (mode === 'portal' && wizard && (wizard.phase === 'pick1' || wizard.phase === 'pick2')) {
+    hoverPortal = portalFromPos(px, py);
+  }
+  draw();
+});
+
+canvas.addEventListener('mouseleave', () => {
+  hoverCell = null;
+  hoverPortal = null;
+  draw();
+});
+
+document.getElementById('btnPiece').addEventListener('click', () => {
+  if (winner !== null) return;
+  if (phase === 'endgame') { toast('终局阶段只能放置传送门'); return; }
+  mode = 'piece';
+  wizard = null;
+  hoverPortal = null;
+  updateAll();
+});
+document.getElementById('btnPortal').addEventListener('click', () => {
+  if (winner !== null) return;
+  if (mode === 'portal') { cancelWizard(); return; }
+  if (portals.length >= 26) { toast('26 组传送门已用完'); return; }
+  if (!hasLegalPortalPair()) { toast('当前无任何合法的传送门放置位置'); return; }
+  mode = 'portal';
+  wizard = { phase: 'pick1', p1: null, p2: null };
+  hoverPortal = null;
+  updateAll();
+});
+document.getElementById('btnResign').addEventListener('click', resign);
+document.getElementById('btnNew').addEventListener('click', resetGame);
+
+/* ============================== 启动 ============================== */
+resetGame();
+</script>
+</body>
+</html>
